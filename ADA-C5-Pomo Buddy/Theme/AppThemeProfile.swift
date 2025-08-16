@@ -9,5 +9,5 @@ protocol AppThemeProfile {
     ///   - state: The current state of the app (e.g., idle, focusing).
     ///   - scheme: The current color scheme (light or dark).
     /// - Returns: A complete `AppTheme` struct with the correct colors.
-    func theme(for state: AppState, in scheme: ColorScheme) -> AppTheme
+    func theme(for state: TimerState, in scheme: ColorScheme) -> AppTheme
 }

@@ -12,7 +12,8 @@ import SwiftData
 struct ADA_C5_Pomo_BuddyApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            TimerSettings.self,
+            FocusLog.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

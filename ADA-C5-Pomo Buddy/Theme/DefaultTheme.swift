@@ -6,7 +6,7 @@ struct DefaultTheme: AppThemeProfile {
 
     // MARK: - Public API
 
-    func theme(for state: AppState, in scheme: ColorScheme) -> AppTheme {
+    func theme(for state: TimerState, in scheme: ColorScheme) -> AppTheme {
         switch scheme {
         case .light:
             return lightTheme(for: state)
@@ -19,7 +19,7 @@ struct DefaultTheme: AppThemeProfile {
 
     // MARK: - Private Helpers
 
-    private func lightTheme(for state: AppState) -> AppTheme {
+    private func lightTheme(for state: TimerState) -> AppTheme {
         switch state {
         case .idle: return .idleLight
         case .focusing: return .focusingLight
@@ -28,7 +28,7 @@ struct DefaultTheme: AppThemeProfile {
         }
     }
 
-    private func darkTheme(for state: AppState) -> AppTheme {
+    private func darkTheme(for state: TimerState) -> AppTheme {
         switch state {
         case .idle: return .idleDark
         case .focusing: return .focusingDark
