@@ -9,4 +9,5 @@ struct AppTheme {
     let explan: Color
     let settingState: Color
     let background: Color
+    let primaryButtonText: Color
 }
