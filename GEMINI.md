@@ -62,3 +62,23 @@ The following directory structure will be created within `ADA-C5-Pomo Buddy/ADA-
 
 ### 3.5. Development Principles
 *   **SOLID**: We will adhere to SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion) to build a robust, maintainable, and scalable codebase.
+
+## 4. Development Workflow
+
+### 4.1. Logic-Before-Code Confirmation Principle
+To ensure perfect alignment and prevent rework, the AI partner (Gemini) must receive explicit approval from the lead developer (User) on the intended logic *before* generating or modifying any code.
+
+**Process:**
+1.  **Proposal:** For any new file or modification, Gemini will first propose the high-level goal.
+2.  **Logic Explanation:** Gemini will then provide a detailed, step-by-step explanation of the internal logic of each function and class in plain text.
+3.  **User Approval:** The lead developer will review the logic and give explicit approval to proceed.
+4.  **Code Generation:** Only after receiving approval will Gemini generate the corresponding code, including skeletons or boilerplate.
+
+### 4.2. Mental Walkthrough Principle
+To enhance accuracy and prevent logical errors, Gemini will perform an internal 'mental walkthrough' of user scenarios before proposing logic.
+
+**Process:**
+1.  **Identify Scenarios:** Before defining the logic for a feature, identify the primary user interaction paths (e.g., start -> pause -> resume, start -> finish -> auto-start break).
+2.  **Simulate State Changes:** For each scenario, trace the expected changes in all relevant state variables (`timerState`, `timeRemaining`, etc.) at each step.
+3.  **Verify Logic:** Based on the simulation, verify that the proposed functions and logic correctly handle all transitions, edge cases, and dependencies.
+4.  **Propose Verified Logic:** The final logic proposed to the user will be the result of this internal verification process.
