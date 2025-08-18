@@ -90,7 +90,7 @@ private extension AppTheme {
         secondaryAction: nil,
         explan: AppColor.yellow300,
         settingState: AppColor.neutral400,
-        background: AppColor.darkBackgroundIdle
+        background: AppColor.DarkModeCustom.backgroundIdle
     )
 
     static let focusingDark = AppTheme(
@@ -100,7 +100,7 @@ private extension AppTheme {
         secondaryAction: AppColor.red600,
         explan: AppColor.amber300,
         settingState: AppColor.neutral400,
-        background: AppColor.darkBackgroundFocus
+        background: AppColor.DarkModeCustom.backgroundFocus
     )
 
     static let breakingDark = AppTheme(
@@ -110,7 +110,7 @@ private extension AppTheme {
         secondaryAction: nil,
         explan: AppColor.lime300,
         settingState: AppColor.neutral400,
-        background: AppColor.darkBackgroundBreak
+        background: AppColor.DarkModeCustom.backgroundBreak
     )
 
     static let pausedDark = AppTheme(
@@ -120,6 +120,6 @@ private extension AppTheme {
         secondaryAction: AppColor.red600,
         explan: AppColor.yellow300,
         settingState: AppColor.neutral400,
-        background: AppColor.darkBackgroundIdle
+        background: AppColor.DarkModeCustom.backgroundIdle
     )
 }
