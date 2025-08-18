@@ -4,7 +4,6 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Menlo-Bold.ttf</string>
 		<string>Quicksand.ttf</string>
 	</array>
 </dict>
