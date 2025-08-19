@@ -300,5 +300,6 @@ enum AppColor {
         static let backgroundIdle = Color(hex: "#1F160F")
         static let backgroundFocus = Color(hex: "#21120B")
         static let backgroundBreak = Color(hex: "#13190B")
+        static let backgroundPause = Color(hex: "#0C0D10")
     }
 }

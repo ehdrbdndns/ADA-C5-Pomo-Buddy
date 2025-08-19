@@ -10,24 +10,37 @@ import SwiftData
 
 @main
 struct ADA_C5_Pomo_BuddyApp: App {
-    var sharedModelContainer: ModelContainer = {
+    let modelContainer: ModelContainer
+    @State private var timerViewModel: TimerViewModel
+    @State private var themeManager: ThemeManager
+
+    init() {
         let schema = Schema([
             TimerSettings.self,
             FocusLog.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
+        
+        // Initialize the managers once, using the main context from the container
+        let modelContext = modelContainer.mainContext
+        let timerVM = TimerViewModel(modelContext: modelContext)
+        let themeM = ThemeManager(modelContext: modelContext)
+        
+        _timerViewModel = State(initialValue: timerVM)
+        _themeManager = State(initialValue: themeM)
+    }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(modelContainer)
+        .environment(timerViewModel)
+        .environment(themeManager)
     }
 }

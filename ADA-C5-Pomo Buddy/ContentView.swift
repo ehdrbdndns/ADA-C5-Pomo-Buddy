@@ -1,61 +1,28 @@
-//
-//  ContentView.swift
-//  ADA-C5-Pomo Buddy
-//
-//  Created by Donggyun Yang on 8/14/25.
-//
-
 import SwiftUI
-import SwiftData
 
-struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
-    var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
+enum PageIndex: Int {
+    case history = 0
+    case timer = 1
+    case settings = 2
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+struct ContentView: View {
+    // 0: Settings, 1: Timer, 2: History
+    @State private var selection: PageIndex = .timer
+
+    var body: some View {
+        TabView(selection: $selection) {
+            HistoryView()
+                .tag(PageIndex.history)
+            
+            TimerView()
+                .tag(PageIndex.timer)
+            
+            SettingsView()
+                .tag(PageIndex.settings)
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never)) // Creates the carousel/pager effect
+        .font(.custom("Quicksand", size: AppFont.textBase))
+        .ignoresSafeArea()
+    }
 }

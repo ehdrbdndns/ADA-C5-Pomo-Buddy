@@ -1,0 +1,27 @@
+
+/* 
+  Localizable.strings
+  ADA-C5-Pomo Buddy
+
+  Created by Donggyun Yang on 8/18/25.
+*/
+
+// MARK: - TimerView Buttons
+"timerView_button_start" = "Start";
+"timerView_button_pause" = "Pause";
+"timerView_button_resume" = "Resume";
+"timerView_button_giveUp" = "Give Up";
+"timerView_button_skipBreak" = "Skip Break";
+
+// MARK: - TimerView Texts
+"timerView_text_explanationIdle" = "Ready to focus? Let’s go! 🐹";
+"timerView_text_explanationFocusing" = "Stay focused! You’ve got this! 🏃‍♀️";
+"timerView_text_explanationBreaking" = "Great Job! 🎉 Enjoy your break! 😴";
+"timerView_text_explanationPaused" = "Take a moment, then continue! ⏸️";
+"timerView_text_settingState" = "%d min focus, %d min break";
+
+// MARK: - WorkTypeEditView
+"workTypeEditView_title" = "Edit Work Type";
+"workTypeEditView_placeholder" = "Enter work type";
+"workTypeEditView_button_done" = "Done";
+"workTypeEditView_button_cancel" = "Cancel";
