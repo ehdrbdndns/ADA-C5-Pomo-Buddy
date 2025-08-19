@@ -3,5 +3,24 @@
   ADA-C5-Pomo Buddy
 
   Created by Donggyun Yang on 8/18/25.
-  
 */
+
+// MARK: - TimerView Buttons
+"timerView_button_start" = "시작";
+"timerView_button_pause" = "일시정지";
+"timerView_button_resume" = "재개";
+"timerView_button_giveUp" = "포기";
+"timerView_button_skipBreak" = "휴식 건너뛰기";
+
+// MARK: - TimerView Texts
+"timerView_text_explanationIdle" = "집중할 준비가 됐나요? 🐹";
+"timerView_text_explanationFocusing" = "집중하고 있어요! 🏃‍♀️";
+"timerView_text_explanationBreaking" = "잘했어요! 🎉 잠시 휴식을 즐기세요! 😴";
+"timerView_text_explanationPaused" = "잠시 멈췄어요. 다시 시작해볼까요? ⏸️";
+"timerView_text_settingState" = "%d분 집중, %d분 휴식";
+
+// MARK: - WorkTypeEditView
+"workTypeEditView_title" = "작업 이름 수정";
+"workTypeEditView_placeholder" = "작업 이름을 입력하세요";
+"workTypeEditView_button_done" = "완료";
+"workTypeEditView_button_cancel" = "취소";
