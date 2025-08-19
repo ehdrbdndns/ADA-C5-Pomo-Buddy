@@ -1,4 +1,3 @@
-
 import Foundation
 import SwiftData
 
@@ -22,16 +21,19 @@ final class TimerSettings {
     var isAutoTimerEnabled: Bool
     var language: LanguageSetting
     var selectedCharacter: CharacterType
+    var workType: String
 
     init(focusDuration: TimeInterval = 25 * 60, 
          breakDuration: TimeInterval = 5 * 60, 
          isAutoTimerEnabled: Bool = false, 
          language: LanguageSetting = .systemDefault,
-         selectedCharacter: CharacterType = .default) {
+         selectedCharacter: CharacterType = .default,
+         workType: String = "Pomodoro") {
         self.focusDuration = focusDuration
         self.breakDuration = breakDuration
         self.isAutoTimerEnabled = isAutoTimerEnabled
         self.language = language
         self.selectedCharacter = selectedCharacter
+        self.workType = workType
     }
 }

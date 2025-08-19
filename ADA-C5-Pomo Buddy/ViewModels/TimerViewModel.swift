@@ -8,6 +8,29 @@ final class TimerViewModel {
     var timerState: TimerState = .idle
     var timeRemaining: TimeInterval = 0
     var timeString: String = "00:00"
+    var focusLogs: [FocusLog] = []
+
+    // MARK: - Computed Properties
+    var focusTimeInMinutes: Int {
+        Int(settings?.focusDuration ?? 0) / 60
+    }
+
+    var breakTimeInMinutes: Int {
+        Int(settings?.breakDuration ?? 0) / 60
+    }
+    
+    var completedSessionCount: Int {
+        focusLogs.count
+    }
+
+    var workType: String {
+        get {
+            settings?.workType ?? "Pomodoro"
+        }
+        set {
+            settings?.workType = newValue
+        }
+    }
 
     // MARK: - Private Properties
     private var timer: Timer?
@@ -19,22 +42,19 @@ final class TimerViewModel {
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         fetchSettings()
+        fetchFocusLogs()
         resetTimer(to: .idle)
     }
 
-    // MARK: - Public Methods (Actions for the View)
+    // MARK: - Public Methods
 
-    /// Starts a new focus session from the beginning.
     func start() {
-        // This check prevents starting a timer that's already running.
         guard timerState == .idle || timerState == .breaking else { return }
-        
         timeRemaining = settings?.focusDuration ?? 25 * 60
         timerState = .focusing
         runTimer()
     }
 
-    /// Pauses the currently running timer.
     func pause() {
         guard timerState == .focusing || timerState == .breaking else { return }
         prePauseState = timerState
@@ -42,29 +62,24 @@ final class TimerViewModel {
         timerState = .paused
     }
 
-    /// Resumes the timer from a paused state.
     func resume() {
         guard timerState == .paused else { return }
         timerState = prePauseState
         runTimer()
     }
     
-    /// Gives up the current session and resets the timer.
     func giveUp() {
         timer?.invalidate()
-        // As per our decision, we do not log the time if the user gives up.
         resetTimer(to: .idle)
     }
 
-    /// Skips the break and resets the timer to the idle state.
     func skipBreak() {
         timer?.invalidate()
         resetTimer(to: .idle)
     }
 
-    // MARK: - Private Timer Control Methods
+    // MARK: - Private Methods
 
-    /// Invalidates the old timer and creates a new one.
     private func runTimer() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
@@ -72,9 +87,6 @@ final class TimerViewModel {
         }
     }
 
-    // MARK: - Private State & Logic Methods
-
-    /// The main heartbeat of the timer, called every second.
     private func updateTimer() {
         guard timeRemaining > 0 else {
             handleTimerCompletion()
@@ -84,10 +96,8 @@ final class TimerViewModel {
         timeString = formatTime(for: timeRemaining)
     }
 
-    /// Handles the logic for when a timer session (focus or break) completes.
     private func handleTimerCompletion() {
         timer?.invalidate()
-
         switch timerState {
         case .focusing:
             transitionToBreak()
@@ -98,24 +108,21 @@ final class TimerViewModel {
         }
     }
 
-    /// Transitions the state from focusing to breaking.
     private func transitionToBreak() {
         guard let settings = settings else { return }
         
         let log = FocusLog(date: .now, focusDuration: settings.focusDuration)
         modelContext.insert(log)
+        fetchFocusLogs() // Refetch to update the count and array
         
         timerState = .breaking
         timeRemaining = settings.breakDuration
         timeString = formatTime(for: timeRemaining)
-        
         runTimer()
     }
 
-    /// Transitions to the next session after a break, or ends if auto-timer is off.
     private func transitionToNextSession() {
         guard let settings = settings else { return }
-        
         if settings.isAutoTimerEnabled {
             timerState = .focusing
             timeRemaining = settings.focusDuration
@@ -126,7 +133,6 @@ final class TimerViewModel {
         }
     }
 
-    /// Resets the timer to a specified state, usually idle.
     private func resetTimer(to state: TimerState) {
         guard let settings = settings else { return }
         self.timerState = state
@@ -134,14 +140,10 @@ final class TimerViewModel {
         self.timeString = formatTime(for: self.timeRemaining)
     }
 
-    // MARK: - Private Data & Formatting Methods
-
-    /// Fetches user settings from SwiftData, or creates them if they don't exist.
     private func fetchSettings() {
         do {
             let descriptor = FetchDescriptor<TimerSettings>()
-            let fetchedSettings = try modelContext.fetch(descriptor)
-            if let settings = fetchedSettings.first {
+            if let settings = try modelContext.fetch(descriptor).first {
                 self.settings = settings
             } else {
                 let defaultSettings = TimerSettings()
@@ -152,8 +154,16 @@ final class TimerViewModel {
             fatalError("Failed to fetch settings: \(error)")
         }
     }
+    
+    private func fetchFocusLogs() {
+        do {
+            let descriptor = FetchDescriptor<FocusLog>(sortBy: [SortDescriptor(\FocusLog.date, order: .reverse)])
+            self.focusLogs = try modelContext.fetch(descriptor)
+        } catch {
+            fatalError("Failed to fetch focus logs: \(error)")
+        }
+    }
 
-    /// Formats a TimeInterval into a "mm:ss" string.
     private func formatTime(for interval: TimeInterval) -> String {
         let minutes = Int(interval) / 60
         let seconds = Int(interval) % 60
