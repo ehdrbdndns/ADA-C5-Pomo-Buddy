@@ -38,11 +38,67 @@ final class TimerViewModel {
     private var settings: TimerSettings?
     private var prePauseState: TimerState = .idle
 
+    // MARK: - Settings Properties for View Binding
+
+    var focusDurationMinutes: Int {
+        get {
+            Int(settings?.focusDuration ?? 25 * 60) / 60
+        }
+        set {
+            settings?.focusDuration = TimeInterval(newValue * 60)
+            resetTimer(to: .idle) // Reset timer when duration changes
+        }
+    }
+
+    var breakDurationMinutes: Int {
+        get {
+            Int(settings?.breakDuration ?? 5 * 60) / 60
+        }
+        set {
+            settings?.breakDuration = TimeInterval(newValue * 60)
+        }
+    }
+
+    var isAutoTimerEnabled: Bool {
+        get {
+            settings?.isAutoTimerEnabled ?? false
+        }
+        set {
+            settings?.isAutoTimerEnabled = newValue
+        }
+    }
+
+    var isDarkMode: Bool {
+        get {
+            appearanceMode == .dark
+        }
+        set {
+            appearanceMode = newValue ? .dark : .light
+        }
+    }
+
+    private var appearanceMode: AppearanceMode {
+        get {
+            settings?.appearance ?? .light
+        }
+        set {
+            settings?.appearance = newValue
+        }
+    }
+
     // MARK: - Initialization
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         fetchSettings()
         fetchFocusLogs()
+        resetTimer(to: .idle)
+    }
+
+    // MARK: - Public Methods for Settings
+
+    func applyQuickSetting(focus: Int, breakTime: Int) {
+        settings?.focusDuration = TimeInterval(focus * 60)
+        settings?.breakDuration = TimeInterval(breakTime * 60)
         resetTimer(to: .idle)
     }
 
