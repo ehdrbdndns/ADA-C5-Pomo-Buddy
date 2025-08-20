@@ -1,3 +1,10 @@
+//
+//  ButtonStyle+Extensions.swift
+//  ADA-C5-Pomo Buddy
+//
+//  Created by Donggyun Yang on 8/19/25.
+//
+
 
 import SwiftUI
 
@@ -17,8 +24,6 @@ struct CustomButtonStyle: ButtonStyle {
             .shadowLG()
     }
 }
-
-// MARK: - Pre-defined Style Instances
 
 extension ButtonStyle where Self == CustomButtonStyle {
     static var yellow: CustomButtonStyle {
