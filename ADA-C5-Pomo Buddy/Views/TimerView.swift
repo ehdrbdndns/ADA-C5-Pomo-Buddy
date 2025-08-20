@@ -27,7 +27,7 @@ struct TimerView: View {
                 .padding(.bottom, 12)
             
             Text(viewModel.timeString)
-                .foregroundStyle(AppColor.gray700)
+                .foregroundStyle(theme.timerViewTheme.timer)
                 .font(.custom("Menlo-Bold", size: AppFont.text6xl))
             
             /// TODO: 이미지로 전환
@@ -37,16 +37,14 @@ struct TimerView: View {
             .cornerRadius(100)
             .padding(.vertical, 40)
             
-            buttonActionView()
+            buttonActionView(theme: theme)
                 .frame(maxWidth: 240)
                 .padding(.bottom, 24)
             
-            // explan
             explainText(theme: theme)
             
             Spacer()
             
-            // settingState
             settingStateText(theme: theme)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -57,16 +55,18 @@ struct TimerView: View {
             WorkTypeEditView(workType: $viewModel.workType)
         }
     }
-    
+}
+
+extension TimerView {
     private func coinView(theme: AppTheme) -> some View {
         HStack {
             Image("Coin")
             Text("\(_viewModel.completedSessionCount)")
-                .foregroundStyle(theme.coin)
+                .foregroundStyle(theme.timerViewTheme.coin)
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 12)
-        .background(.white)
+        .background(theme.cardBackground)
         .cornerRadius(100)
         .shadowLG()
     }
@@ -77,69 +77,93 @@ struct TimerView: View {
         } label: {
             HStack(alignment: .bottom) {
                 Text(_viewModel.workType)
-                    .foregroundStyle(theme.workingType)
+                    .foregroundStyle(theme.timerViewTheme.workingType)
                     .font(.system(size: AppFont.textBase, weight: .regular))
                 
                 Image(systemName: "pencil.line")
                     .font(.system(size: 13))
-                    .foregroundStyle(AppColor.gray600)
+                    .foregroundStyle(theme.timerViewTheme.pencil)
             }
         }
     }
     
-    private func buttonActionView() -> some View {
+    private func buttonActionView(theme: AppTheme) -> some View {
         HStack {
             switch _viewModel.timerState {
             case .focusing:
                 HStack(spacing: 12) {
                     Button {
-                        print("click giveUp")
                         _viewModel.giveUp()
                     } label: {
                         Text("timerView_button_giveUp")
                     }
-                    .buttonStyle(.red)
+                    .buttonStyle(
+                        CustomButtonStyle(
+                            backgroundColor: theme.buttonTheme.redBackgorund,
+                            foregroundColor: theme.buttonTheme.redForground
+                        )
+                    )
                     
                     Button {
-                        print("click pause")
                         _viewModel.pause()
                     } label: {
                         Text("timerView_button_pause")
                     }
-                    .buttonStyle(.yellow)
+                    .buttonStyle(
+                        CustomButtonStyle(
+                            backgroundColor: theme.buttonTheme.yellowBackground,
+                            foregroundColor: theme.buttonTheme.yellowForground
+                        )
+                    )
                 }
             case .breaking:
                 Button {
-                    print("click skipBreak")
                     _viewModel.skipBreak()
                 } label: {
                     Text("timerView_button_skipBreak")
                 }
-                .buttonStyle(.green)
+                .buttonStyle(
+                    CustomButtonStyle(
+                        backgroundColor: theme.buttonTheme.greenBackground,
+                        foregroundColor: theme.buttonTheme.greenForground
+                    )
+                )
             case .paused:
                 Button {
-                    print("timerView_button_giveUp")
                     _viewModel.giveUp()
                 } label: {
                     Text("timerView_button_giveUp")
                 }
-                .buttonStyle(.red)
+                .buttonStyle(
+                    CustomButtonStyle(
+                        backgroundColor: theme.buttonTheme.redBackgorund,
+                        foregroundColor: theme.buttonTheme.redForground
+                    )
+                )
                 
                 Button {
-                    print("Click resume")
                     _viewModel.resume()
                 } label: {
                     Text("timerView_button_resume")
                 }
-                .buttonStyle(.yellow)
+                .buttonStyle(
+                    CustomButtonStyle(
+                        backgroundColor: theme.buttonTheme.yellowBackground,
+                        foregroundColor: theme.buttonTheme.yellowForground
+                    )
+                )
             default:
                 Button {
-                    print("click start")
                     _viewModel.start()
                 } label: {
                     Text("timerView_button_start")
                 }
-                .buttonStyle(.yellow)
+                .buttonStyle(
+                    CustomButtonStyle(
+                        backgroundColor: theme.buttonTheme.yellowBackground,
+                        foregroundColor: theme.buttonTheme.yellowForground
+                    )
+                )
             }
         }
     }
@@ -159,7 +183,7 @@ struct TimerView: View {
         }();
         
         return Text(explainText)
-            .foregroundStyle(theme.explain)
+            .foregroundStyle(theme.timerViewTheme.explain)
             .font(.system(size: AppFont.textLg, weight: .regular))
     }
 
@@ -171,21 +195,6 @@ struct TimerView: View {
         
         return Text(settingText)
             .font(.system(size: AppFont.textSm, weight: .regular))
-            .foregroundStyle(AppColor.gray500)
+            .foregroundStyle(theme.timerViewTheme.settingState)
     }
 }
-
-//#Preview {
-//    print(0)
-//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-//    print(1)
-//    let container = try! ModelContainer(for: TimerSettings.self, FocusLog.self, configurations: config)
-//    print(2)
-//    let viewModel = TimerViewModel(modelContext: container.mainContext)
-//    let themeManager = ThemeManager(modelContext: container.mainContext)
-//
-//    return TimerView()
-//            .modelContainer(container)
-//            .environment(viewModel)
-//            .environment(themeManager)
-//}
