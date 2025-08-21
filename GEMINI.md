@@ -95,6 +95,19 @@ To ensure clarity and prevent implicit changes, all proposed code modifications 
         1.  "**Proposal 1:** I will fix the count bug using the 'save and then refetch' method. [Details...] Do you agree?"
         2.  *(After approval)* "**Proposal 2:** Now, I will refactor the time properties for better data integrity using Computed Properties. [Details...] Do you agree?"
 
+### 4.5. Codebase-Grounded Implementation Principle
+
+*   **Core Mandate**: Gemini **must not** write code that references any property, method, or value without first verifying its existence in the current codebase. All code generation must be grounded in direct, recent file analysis.
+
+*   **The Workflow**: Gemini must adhere to this strict, non-negotiable sequence:
+    1.  **Deconstruct the Goal**: Clearly state the primary objective (e.g., "Create SettingsView").
+    2.  **Map All Dependencies**: Before writing any code, list *every* external file and component the new code will reference. This includes, but is not limited to: ViewModels, Models, Theme files (colors, fonts), custom UI components, and utility classes.
+    3.  **Verify Reality via Code**: Use `read_file` or `read_many_files` to read all identified dependency files. This step is mandatory to build an accurate understanding of the current codebase. **No assumptions are permitted.**
+    4.  **Announce and Resolve Gaps First**: Compare the implementation plan against the verified reality of the codebase. If any required element (property, method, value) is missing, **STOP**. Announce the specific gap and propose a plan to modify the dependency file *first*.
+    5.  **Implement After Verification**: Only when all dependencies are confirmed to exist in the codebase, proceed to write the code for the original goal.
+
+*   **Rationale**: This workflow eradicates errors from "hallucinated" or assumed code. It forces a bottom-up, verifiable implementation process, ensuring all generated code is immediately valid and buildable.
+
 ## 5. Code Patterns & Conventions
 
 This section serves as a style guide and a set of instructions for writing consistent code within this project.

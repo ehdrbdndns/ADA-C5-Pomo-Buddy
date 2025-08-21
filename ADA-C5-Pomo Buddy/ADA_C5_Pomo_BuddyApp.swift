@@ -35,9 +35,14 @@ struct ADA_C5_Pomo_BuddyApp: App {
         _themeManager = State(initialValue: themeM)
     }
 
+    private var preferredColorScheme: ColorScheme? {
+        return timerViewModel.isDarkMode ? .dark : .light
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(preferredColorScheme)
         }
         .modelContainer(modelContainer)
         .environment(timerViewModel)
