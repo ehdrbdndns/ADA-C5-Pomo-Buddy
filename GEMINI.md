@@ -37,6 +37,8 @@ This GEMINI.md document is the sole specification for this project. All discussi
     *   When a FocusSession ends, the BreakSession **always** starts automatically.
     *   When a BreakSession ends, the next FocusSession **only** starts automatically if this setting is enabled.
 
+*   **Appearance Setting**: A user-configurable setting (`appearance`) that determines the app's color scheme. The user can choose between **Light Mode** and **Dark Mode**, and this choice overrides the system setting.
+
 *   **Navigation Style**: The main UI is a carousel/pager, not a tab bar. The user navigates between Timer, Settings, and History by swiping left and right.
 
 ## 3. Architecture and Structure
@@ -59,6 +61,11 @@ The project will be built using the **MVVM (Model-View-ViewModel)** pattern.
 *   `/Resource`: Contains resources, including language-specific localization files.
     *   `/Resource/en.lproj/Localizable.strings`
     *   `/Resource/ko.lproj/Localizable.strings`
+
+### 3.4. Main View Descriptions
+*   **TimerView**: The main screen for the Pomodoro timer operation, character interaction, and session progress.
+*   **SettingsView**: A screen where the user can configure timer durations, auto-start preferences, and the app's appearance (Light/Dark Mode).
+*   **HistoryView**: (To be implemented) A screen to view logs of past focus sessions.
 
 ## 4. Development Workflow
 
@@ -113,7 +120,7 @@ To ensure clarity and prevent implicit changes, all proposed code modifications 
 This section serves as a style guide and a set of instructions for writing consistent code within this project.
 
 ### 5.1. Dependency Injection
-*   **Rule**: Global, app-wide services (`TimerViewModel`, `ThemeManager`) will be initialized once at the app's entry point (`ADA_C5_Pomo_BuddyApp.swift`) and injected into the SwiftUI `Environment`.
+*   **Rule**: Global, app-wide services (`TimerViewModel`, `ThemeManager`) that conform to the `@Observable` macro are initialized at the app's entry point (`ADA_C5_Pomo_BuddyApp.swift`) and injected into the SwiftUI `Environment`.
 *   **Example**:
     ```swift
     // In App struct
@@ -147,3 +154,8 @@ This section serves as a style guide and a set of instructions for writing consi
         Text("timerView_button_start")
     }
     ```
+
+### 5.4. Sub-view Refactoring
+*   **Principle**: To improve compiler performance and code readability, complex views must be broken down into smaller, single-purpose sub-views.
+*   **Primary Pattern**: Use `private var body: some View` computed properties, typically organized within a `private extension` of the main view. This is the preferred pattern as it provides direct access to the main view's state (like `@Environment` objects) without passing numerous parameters.
+*   **Alternative Pattern**: For cases where explicit dependency passing is clearer, `private func body(...) -> some View` that accepts `@Binding` parameters is also acceptable. The choice should be based on clarity and context.

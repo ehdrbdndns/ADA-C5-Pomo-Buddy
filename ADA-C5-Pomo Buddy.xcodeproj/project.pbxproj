@@ -6,11 +6,70 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E731FEA82E572BE200E6A616 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E731FEA72E572BE200E6A616 /* WidgetKit.framework */; };
+		E731FEAA2E572BE200E6A616 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E731FEA92E572BE200E6A616 /* SwiftUI.framework */; };
+		E731FEBB2E572BE300E6A616 /* PomoBuddyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E731FEA52E572BE200E6A616 /* PomoBuddyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E731FEB92E572BE300E6A616 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E77BA7652E4DA467008DC259 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E731FEA42E572BE200E6A616;
+			remoteInfo = PomoBuddyWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E731FEBC2E572BE300E6A616 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E731FEBB2E572BE300E6A616 /* PomoBuddyWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		E731FEA52E572BE200E6A616 /* PomoBuddyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PomoBuddyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E731FEA72E572BE200E6A616 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		E731FEA92E572BE200E6A616 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E77BA76D2E4DA467008DC259 /* ADA-C5-Pomo Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ADA-C5-Pomo Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E731FEBF2E572BE300E6A616 /* Exceptions for "PomoBuddyWidget" folder in "PomoBuddyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E731FEA42E572BE200E6A616 /* PomoBuddyWidgetExtension */;
+		};
+		E731FEC72E57352B00E6A616 /* Exceptions for "PomoBuddyWidget" folder in "ADA-C5-Pomo Buddy" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PomoBuddyActivityAttributes.swift,
+			);
+			target = E77BA76C2E4DA467008DC259 /* ADA-C5-Pomo Buddy */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		E731FEAB2E572BE200E6A616 /* PomoBuddyWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E731FEC72E57352B00E6A616 /* Exceptions for "PomoBuddyWidget" folder in "ADA-C5-Pomo Buddy" target */,
+				E731FEBF2E572BE300E6A616 /* Exceptions for "PomoBuddyWidget" folder in "PomoBuddyWidgetExtension" target */,
+			);
+			path = PomoBuddyWidget;
+			sourceTree = "<group>";
+		};
 		E77BA76F2E4DA467008DC259 /* ADA-C5-Pomo Buddy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "ADA-C5-Pomo Buddy";
@@ -19,6 +78,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E731FEA22E572BE200E6A616 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E731FEAA2E572BE200E6A616 /* SwiftUI.framework in Frameworks */,
+				E731FEA82E572BE200E6A616 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E77BA76A2E4DA467008DC259 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -29,10 +97,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E731FEA62E572BE200E6A616 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E731FEA72E572BE200E6A616 /* WidgetKit.framework */,
+				E731FEA92E572BE200E6A616 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E77BA7642E4DA467008DC259 = {
 			isa = PBXGroup;
 			children = (
 				E77BA76F2E4DA467008DC259 /* ADA-C5-Pomo Buddy */,
+				E731FEAB2E572BE200E6A616 /* PomoBuddyWidget */,
+				E731FEA62E572BE200E6A616 /* Frameworks */,
 				E77BA76E2E4DA467008DC259 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				E77BA76D2E4DA467008DC259 /* ADA-C5-Pomo Buddy.app */,
+				E731FEA52E572BE200E6A616 /* PomoBuddyWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +128,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E731FEA42E572BE200E6A616 /* PomoBuddyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E731FEC02E572BE300E6A616 /* Build configuration list for PBXNativeTarget "PomoBuddyWidgetExtension" */;
+			buildPhases = (
+				E731FEA12E572BE200E6A616 /* Sources */,
+				E731FEA22E572BE200E6A616 /* Frameworks */,
+				E731FEA32E572BE200E6A616 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E731FEAB2E572BE200E6A616 /* PomoBuddyWidget */,
+			);
+			name = PomoBuddyWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = PomoBuddyWidgetExtension;
+			productReference = E731FEA52E572BE200E6A616 /* PomoBuddyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		E77BA76C2E4DA467008DC259 /* ADA-C5-Pomo Buddy */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E77BA77A2E4DA468008DC259 /* Build configuration list for PBXNativeTarget "ADA-C5-Pomo Buddy" */;
@@ -55,10 +157,12 @@
 				E77BA7692E4DA467008DC259 /* Sources */,
 				E77BA76A2E4DA467008DC259 /* Frameworks */,
 				E77BA76B2E4DA467008DC259 /* Resources */,
+				E731FEBC2E572BE300E6A616 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E731FEBA2E572BE300E6A616 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E77BA76F2E4DA467008DC259 /* ADA-C5-Pomo Buddy */,
@@ -80,6 +184,9 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					E731FEA42E572BE200E6A616 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 					E77BA76C2E4DA467008DC259 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -101,11 +208,19 @@
 			projectRoot = "";
 			targets = (
 				E77BA76C2E4DA467008DC259 /* ADA-C5-Pomo Buddy */,
+				E731FEA42E572BE200E6A616 /* PomoBuddyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E731FEA32E572BE200E6A616 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E77BA76B2E4DA467008DC259 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -116,6 +231,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E731FEA12E572BE200E6A616 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E77BA7692E4DA467008DC259 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,7 +247,69 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E731FEBA2E572BE300E6A616 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E731FEA42E572BE200E6A616 /* PomoBuddyWidgetExtension */;
+			targetProxy = E731FEB92E572BE300E6A616 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		E731FEBD2E572BE300E6A616 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7WT5JSS7B6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PomoBuddyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PomoBuddyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ADA-C5-Pomo-Buddy.PomoBuddyWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E731FEBE2E572BE300E6A616 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7WT5JSS7B6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PomoBuddyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PomoBuddyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ADA-C5-Pomo-Buddy.PomoBuddyWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		E77BA7782E4DA468008DC259 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -254,12 +438,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "ADA-C5-Pomo Buddy/ADA-C5-Pomo Buddy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7WT5JSS7B6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ADA-C5-Pomo-Buddy-Info.plist";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -283,12 +469,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "ADA-C5-Pomo Buddy/ADA-C5-Pomo Buddy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7WT5JSS7B6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ADA-C5-Pomo-Buddy-Info.plist";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -310,6 +498,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E731FEC02E572BE300E6A616 /* Build configuration list for PBXNativeTarget "PomoBuddyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E731FEBD2E572BE300E6A616 /* Debug */,
+				E731FEBE2E572BE300E6A616 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E77BA7682E4DA467008DC259 /* Build configuration list for PBXProject "ADA-C5-Pomo Buddy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
