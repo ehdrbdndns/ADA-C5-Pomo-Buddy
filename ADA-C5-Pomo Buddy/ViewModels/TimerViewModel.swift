@@ -1,3 +1,4 @@
+
 import Foundation
 import SwiftUI
 import SwiftData
@@ -9,6 +10,13 @@ final class TimerViewModel {
     var timeRemaining: TimeInterval = 0
     var timeString: String = "00:00"
     var focusLogs: [FocusLog] = []
+
+    // MARK: - Private Properties
+    private var timer: Timer?
+    private var modelContext: ModelContext
+    private var settings: TimerSettings?
+    private var prePauseState: TimerState = .idle
+    private let liveActivityManager = LiveActivityManager()
 
     // MARK: - Computed Properties
     var focusTimeInMinutes: Int {
@@ -31,12 +39,6 @@ final class TimerViewModel {
             settings?.workType = newValue
         }
     }
-
-    // MARK: - Private Properties
-    private var timer: Timer?
-    private var modelContext: ModelContext
-    private var settings: TimerSettings?
-    private var prePauseState: TimerState = .idle
 
     // MARK: - Settings Properties for View Binding
 
@@ -108,6 +110,10 @@ final class TimerViewModel {
         guard timerState == .idle || timerState == .breaking else { return }
         timeRemaining = settings?.focusDuration ?? 25 * 60
         timerState = .focusing
+        
+        // ViewModel은 남은 시간(timeRemaining)만 매니저에게 전달합니다.
+        liveActivityManager.startLiveActivity(taskName: "코딩하기", characterImageName: "quokka_char_image", timeString: self.timeString, timeRemaining: self.timeRemaining)
+        
         runTimer()
     }
 
@@ -126,11 +132,13 @@ final class TimerViewModel {
     
     func giveUp() {
         timer?.invalidate()
+        liveActivityManager.endLiveActivity()
         resetTimer(to: .idle)
     }
 
     func skipBreak() {
         timer?.invalidate()
+        liveActivityManager.endLiveActivity()
         resetTimer(to: .idle)
     }
 
@@ -150,6 +158,9 @@ final class TimerViewModel {
         }
         timeRemaining -= 1
         timeString = formatTime(for: timeRemaining)
+        
+        // ViewModel은 남은 시간(timeRemaining)만 매니저에게 전달합니다.
+        liveActivityManager.updateLiveActivity(timeString: self.timeString, sessionState: self.timerState == .focusing ? "Focus" : "Break", timeRemaining: self.timeRemaining)
     }
 
     private func handleTimerCompletion() {
@@ -158,6 +169,7 @@ final class TimerViewModel {
         case .focusing:
             transitionToBreak()
         case .breaking:
+            liveActivityManager.endLiveActivity()
             transitionToNextSession()
         default:
             resetTimer(to: .idle)
@@ -174,6 +186,10 @@ final class TimerViewModel {
         timerState = .breaking
         timeRemaining = settings.breakDuration
         timeString = formatTime(for: timeRemaining)
+        
+        // 휴식 세션이 시작될 때, 새로운 남은 시간(timeRemaining)으로 위젯을 업데이트합니다.
+        liveActivityManager.updateLiveActivity(timeString: self.timeString, sessionState: "Break", timeRemaining: self.timeRemaining)
+        
         runTimer()
     }
 
@@ -183,6 +199,10 @@ final class TimerViewModel {
             timerState = .focusing
             timeRemaining = settings.focusDuration
             timeString = formatTime(for: timeRemaining)
+            
+            // 자동 시작 시, 새로운 집중 세션의 남은 시간(timeRemaining)으로 위젯을 업데이트합니다.
+            liveActivityManager.updateLiveActivity(timeString: self.timeString, sessionState: "Focus", timeRemaining: self.timeRemaining)
+            
             runTimer()
         } else {
             resetTimer(to: .idle)
