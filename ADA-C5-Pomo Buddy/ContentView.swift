@@ -1,28 +1,25 @@
 import SwiftUI
 
-enum PageIndex: Int {
-    case history = 0
-    case timer = 1
-    case settings = 2
-}
-
 struct ContentView: View {
-    // 0: Settings, 1: Timer, 2: History
-    @State private var selection: PageIndex = .timer
-
     var body: some View {
-        TabView(selection: $selection) {
-            HistoryView()
-                .tag(PageIndex.history)
+        TabView {
+            Tab("navigation_home", systemImage: "house") {
+                TimerView()
+            }
             
-            TimerView()
-                .tag(PageIndex.timer)
+            Tab("navigation_calendar", systemImage: "calendar") {
+                HistoryView()
+            }
             
-            SettingsView()
-                .tag(PageIndex.settings)
+            Tab("navigation_settings", systemImage: "gear") {
+                SettingsView()
+            }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never)) // Creates the carousel/pager effect
         .font(.custom("Quicksand", size: AppFont.textBase))
         .ignoresSafeArea()
     }
+}
+
+#Preview {
+    ContentView()
 }

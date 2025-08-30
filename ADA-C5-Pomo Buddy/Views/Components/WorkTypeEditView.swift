@@ -15,7 +15,7 @@ struct WorkTypeEditView: View {
                 Button(action: { dismiss() }) {
                     Text("workTypeEditView_button_done")
                 }
-                .buttonStyle(.yellow)
+                .buttonStyle(.primary)
                 
                 Spacer()
             }
