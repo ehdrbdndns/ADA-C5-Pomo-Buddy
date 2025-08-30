@@ -10,57 +10,36 @@ final class TimerViewModel {
     var timeRemaining: TimeInterval = 0
     var timeString: String = "00:00"
     var focusLogs: [FocusLog] = []
-
+    
     // MARK: - Private Properties
     private var timer: Timer?
     private var modelContext: ModelContext
     private var settings: TimerSettings?
     private var prePauseState: TimerState = .idle
     private let liveActivityManager = LiveActivityManager()
-
+    
     // MARK: - Computed Properties
     var focusTimeInMinutes: Int {
-        Int(settings?.focusDuration ?? 0) / 60
+        Int(settings?.currentWorkType.focusDuration ?? 0) / 60
     }
-
+    
     var breakTimeInMinutes: Int {
-        Int(settings?.breakDuration ?? 0) / 60
+        Int(settings?.currentWorkType.breakDuration ?? 0) / 60
     }
     
     var completedSessionCount: Int {
         focusLogs.count
     }
-
+    
     var workType: String {
         get {
-            settings?.workType ?? "Pomodoro"
+            settings?.currentWorkType.name ?? "Study"
         }
         set {
-            settings?.workType = newValue
+            settings?.currentWorkType.name = newValue
         }
     }
-
-    // MARK: - Settings Properties for View Binding
-
-    var focusDurationMinutes: Int {
-        get {
-            Int(settings?.focusDuration ?? 25 * 60) / 60
-        }
-        set {
-            settings?.focusDuration = TimeInterval(newValue * 60)
-            resetTimer(to: .idle) // Reset timer when duration changes
-        }
-    }
-
-    var breakDurationMinutes: Int {
-        get {
-            Int(settings?.breakDuration ?? 5 * 60) / 60
-        }
-        set {
-            settings?.breakDuration = TimeInterval(newValue * 60)
-        }
-    }
-
+    
     var isAutoTimerEnabled: Bool {
         get {
             settings?.isAutoTimerEnabled ?? false
@@ -69,7 +48,7 @@ final class TimerViewModel {
             settings?.isAutoTimerEnabled = newValue
         }
     }
-
+    
     var isDarkMode: Bool {
         get {
             appearanceMode == .dark
@@ -78,7 +57,7 @@ final class TimerViewModel {
             appearanceMode = newValue ? .dark : .light
         }
     }
-
+    
     private var appearanceMode: AppearanceMode {
         get {
             settings?.appearance ?? .light
@@ -87,7 +66,7 @@ final class TimerViewModel {
             settings?.appearance = newValue
         }
     }
-
+    
     // MARK: - Initialization
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -95,20 +74,10 @@ final class TimerViewModel {
         fetchFocusLogs()
         resetTimer(to: .idle)
     }
-
-    // MARK: - Public Methods for Settings
-
-    func applyQuickSetting(focus: Int, breakTime: Int) {
-        settings?.focusDuration = TimeInterval(focus * 60)
-        settings?.breakDuration = TimeInterval(breakTime * 60)
-        resetTimer(to: .idle)
-    }
-
-    // MARK: - Public Methods
-
+    
     func start() {
         guard timerState == .idle || timerState == .breaking else { return }
-        timeRemaining = settings?.focusDuration ?? 25 * 60
+        timeRemaining = settings?.currentWorkType.focusDuration ?? 25 * 60
         timerState = .focusing
         
         // ViewModel은 남은 시간(timeRemaining)만 매니저에게 전달합니다.
@@ -116,14 +85,14 @@ final class TimerViewModel {
         
         runTimer()
     }
-
+    
     func pause() {
         guard timerState == .focusing || timerState == .breaking else { return }
         prePauseState = timerState
         timer?.invalidate()
         timerState = .paused
     }
-
+    
     func resume() {
         guard timerState == .paused else { return }
         timerState = prePauseState
@@ -135,22 +104,22 @@ final class TimerViewModel {
         liveActivityManager.endLiveActivity()
         resetTimer(to: .idle)
     }
-
+    
     func skipBreak() {
         timer?.invalidate()
         liveActivityManager.endLiveActivity()
         resetTimer(to: .idle)
     }
-
+    
     // MARK: - Private Methods
-
+    
     private func runTimer() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.updateTimer()
         }
     }
-
+    
     private func updateTimer() {
         guard timeRemaining > 0 else {
             handleTimerCompletion()
@@ -159,10 +128,13 @@ final class TimerViewModel {
         timeRemaining -= 1
         timeString = formatTime(for: timeRemaining)
         
-        // ViewModel은 남은 시간(timeRemaining)만 매니저에게 전달합니다.
-        liveActivityManager.updateLiveActivity(timeString: self.timeString, sessionState: self.timerState == .focusing ? "Focus" : "Break", timeRemaining: self.timeRemaining)
+        liveActivityManager.updateLiveActivity(
+            timeString: self.timeString
+            , sessionState: self.timerState == .focusing ? "Focus" : "Break"
+            , timeRemaining: self.timeRemaining
+        )
     }
-
+    
     private func handleTimerCompletion() {
         timer?.invalidate()
         switch timerState {
@@ -175,16 +147,16 @@ final class TimerViewModel {
             resetTimer(to: .idle)
         }
     }
-
+    
     private func transitionToBreak() {
         guard let settings = settings else { return }
         
-        let log = FocusLog(date: .now, focusDuration: settings.focusDuration)
+        let log = FocusLog(date: .now, focusDuration: settings.currentWorkType.focusDuration)
         modelContext.insert(log)
         fetchFocusLogs() // Refetch to update the count and array
         
         timerState = .breaking
-        timeRemaining = settings.breakDuration
+        timeRemaining = settings.currentWorkType.breakDuration
         timeString = formatTime(for: timeRemaining)
         
         // 휴식 세션이 시작될 때, 새로운 남은 시간(timeRemaining)으로 위젯을 업데이트합니다.
@@ -192,12 +164,12 @@ final class TimerViewModel {
         
         runTimer()
     }
-
+    
     private func transitionToNextSession() {
         guard let settings = settings else { return }
         if settings.isAutoTimerEnabled {
             timerState = .focusing
-            timeRemaining = settings.focusDuration
+            timeRemaining = settings.currentWorkType.focusDuration
             timeString = formatTime(for: timeRemaining)
             
             // 자동 시작 시, 새로운 집중 세션의 남은 시간(timeRemaining)으로 위젯을 업데이트합니다.
@@ -208,14 +180,14 @@ final class TimerViewModel {
             resetTimer(to: .idle)
         }
     }
-
+    
     private func resetTimer(to state: TimerState) {
         guard let settings = settings else { return }
         self.timerState = state
-        self.timeRemaining = settings.focusDuration
+        self.timeRemaining = settings.currentWorkType.focusDuration
         self.timeString = formatTime(for: self.timeRemaining)
     }
-
+    
     private func fetchSettings() {
         do {
             let descriptor = FetchDescriptor<TimerSettings>()
@@ -239,7 +211,7 @@ final class TimerViewModel {
             fatalError("Failed to fetch focus logs: \(error)")
         }
     }
-
+    
     private func formatTime(for interval: TimeInterval) -> String {
         let minutes = Int(interval) / 60
         let seconds = Int(interval) % 60

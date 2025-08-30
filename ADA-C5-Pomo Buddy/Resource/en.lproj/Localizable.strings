@@ -15,8 +15,8 @@
 
 // MARK: - TimerView Texts
 "timerView_text_explanationIdle" = "Ready to focus? Let’s go! 🐹";
-"timerView_text_explanationFocusing" = "Stay focused! You’ve got this! 🏃‍♀️";
-"timerView_text_explanationBreaking" = "Great Job! 🎉 Enjoy your break! 😴";
+"timerView_text_explanationFocusing" = "Stay focused! 🏃‍♀️";
+"timerView_text_explanationBreaking" = "Great Job! 🎉";
 "timerView_text_explanationPaused" = "Take a moment, then continue! ⏸️";
 "timerView_text_settingState" = " Pomodoro Timer • %d min focus, %d min break";
 

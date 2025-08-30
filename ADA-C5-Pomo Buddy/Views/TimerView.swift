@@ -19,7 +19,6 @@ struct TimerView: View {
         let theme = themeManager.currentTheme.theme(for: viewModel.timerState, in: colorScheme)
         
         VStack(spacing: 0) {
-            // coin
             coinView(theme: theme)
             
             Spacer()
@@ -80,7 +79,7 @@ extension TimerView {
                     .font(.R5)
                 
                 Image(systemName: "square.and.pencil")
-                    .font(.system(size: 22))
+                    .font(.R5)
                     .foregroundStyle(theme.timerViewTheme.pencil)
             }
         }

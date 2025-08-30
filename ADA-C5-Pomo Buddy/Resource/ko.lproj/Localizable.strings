@@ -15,7 +15,7 @@
 // MARK: - TimerView Texts
 "timerView_text_explanationIdle" = "집중할 준비가 됐나요? 🐹";
 "timerView_text_explanationFocusing" = "집중하고 있어요! 🏃‍♀️";
-"timerView_text_explanationBreaking" = "잘했어요! 🎉 잠시 휴식을 즐기세요! 😴";
+"timerView_text_explanationBreaking" = "잘했어요! 🎉";
 "timerView_text_explanationPaused" = "잠시 멈췄어요. 다시 시작해볼까요? ⏸️";
 "timerView_text_settingState" = "뽀모도로 타이머 • %d분 집중, %d분 휴식";
 

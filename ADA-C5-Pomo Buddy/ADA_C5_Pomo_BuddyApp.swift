@@ -18,16 +18,35 @@ struct ADA_C5_Pomo_BuddyApp: App {
         let schema = Schema([
             TimerSettings.self,
             FocusLog.self,
+            WorkType.self
         ])
+        
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        
         do {
             modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
         
-        // Initialize the managers once, using the main context from the container
         let modelContext = modelContainer.mainContext
+        
+        do {
+            let descriptor = FetchDescriptor<TimerSettings>()
+            let existingSettings = try modelContext.fetch(descriptor)
+            
+            if existingSettings.isEmpty {
+                let newSettings = TimerSettings()
+                let defaultWorkType = WorkType(name: "Study", focusDuration: 25 * 60, breakDuration: 5 * 60)
+                newSettings.workList.append(defaultWorkType)
+                newSettings.selectedWorkTypeID = defaultWorkType.id
+                modelContext.insert(newSettings)
+            }
+        } catch {
+            // For a shipping app, you might want to handle this error more gracefully.
+            fatalError("Failed to seed initial data: \(error)")
+        }
+        
         let timerVM = TimerViewModel(modelContext: modelContext)
         let themeM = ThemeManager(modelContext: modelContext)
         
@@ -38,7 +57,7 @@ struct ADA_C5_Pomo_BuddyApp: App {
     private var preferredColorScheme: ColorScheme? {
         return timerViewModel.isDarkMode ? .dark : .light
     }
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
