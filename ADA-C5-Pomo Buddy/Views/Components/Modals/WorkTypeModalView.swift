@@ -7,13 +7,13 @@
 import SwiftUI
 
 struct WorkTypeModalView: View {
-    
     enum ModalState {
         case showingList
         case addingNew
     }
     
-    @State private var currentState: ModalState = .addingNew
+    @State private var currentState: ModalState = .showingList
+    @Binding var isShowing: Bool
     
     var body: some View {
         VStack(spacing: 0) {
@@ -41,8 +41,14 @@ extension WorkTypeModalView {
         HStack {
             Spacer()
             
-            Image(systemName: "xmark")
-                .font(.system(size: 22))
+            Button {
+                isShowing = false
+                currentState = .showingList
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 22))
+                    .foregroundColor(.black)
+            }
         }
     }
 }
@@ -51,7 +57,7 @@ extension WorkTypeModalView {
     ZStack {
         Color.blackDim20.ignoresSafeArea()
         
-        WorkTypeModalView()
+        WorkTypeModalView(isShowing: .constant(true))
             .padding(.horizontal, 12)
     }
 }

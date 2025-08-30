@@ -48,7 +48,20 @@ struct TimerView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.top, 40)
             .background(theme.timerViewTheme.background)
+            
+            if isShowingWorkTypeEditor {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        isShowingWorkTypeEditor = false
+                    }
+                
+                WorkTypeModalView(isShowing: $isShowingWorkTypeEditor)
+                    .padding(.horizontal, 12)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
+        .animation(.spring(), value: isShowingWorkTypeEditor)
     }
 }
 
