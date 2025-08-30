@@ -2,13 +2,11 @@ import SwiftUI
 
 /// A collection of colors for a specific theme state in the app.
 struct AppTheme {
+    // Character
+    let character: String
+    
     // View Theme
     let timerViewTheme: TimerViewTheme
-    
-    // Basic Theme
-    let background: Color
-    let cardBackground: Color
-    let buttonTheme: ButtonTheme
 }
 
 struct TimerViewTheme {
@@ -17,16 +15,16 @@ struct TimerViewTheme {
     let workingType: Color
     let timer: Color
     let explain: Color
-    let settingState: Color
+    let background: Color
 }
 
 struct ButtonTheme {
-    let yellowBackground: Color
-    let yellowForground: Color
+    let primaryBackground: Color
+    let primaryForground: Color
     
-    let greenBackground: Color
-    let greenForground: Color
+    let secondaryBackground: Color
+    let secondaryForground: Color
     
-    let redBackgorund: Color
-    let redForground: Color
+    let inActiveBackground: Color
+    let inActiveForground: Color
 }

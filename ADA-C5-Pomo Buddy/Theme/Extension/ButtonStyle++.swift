@@ -12,38 +12,44 @@ import SwiftUI
 struct CustomButtonStyle: ButtonStyle {
     var backgroundColor: Color
     var foregroundColor: Color
+    var borderColor: Color?
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: AppFont.textXl, weight: .medium))
+            .font(.SB1)
             .foregroundStyle(foregroundColor)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .background(backgroundColor)
             .clipShape(Capsule())
-            .shadowLG()
+            .overlay(
+                Capsule()
+                    .stroke(borderColor ?? backgroundColor, lineWidth: 1)
+            )
     }
 }
 
 extension ButtonStyle where Self == CustomButtonStyle {
-    static var yellow: CustomButtonStyle {
+    static var primary: CustomButtonStyle {
         CustomButtonStyle(
-            backgroundColor: AppColor.yellow400,
-            foregroundColor: AppColor.yellow900
-        )
-    }
-
-    static var red: CustomButtonStyle {
-        CustomButtonStyle(
-            backgroundColor: AppColor.red400,
-            foregroundColor: AppColor.red900
+            backgroundColor: Color.yellow1,
+            foregroundColor: Color.yellow2
         )
     }
     
-    static var green: CustomButtonStyle {
+    static var secondary: CustomButtonStyle {
         CustomButtonStyle(
-            backgroundColor: AppColor.lime300,
-            foregroundColor: AppColor.lime800
+            backgroundColor: Color.yellowDim20,
+            foregroundColor: Color.yellow2,
+            borderColor: Color.yellow1
+        )
+    }
+    
+    static var inactive: CustomButtonStyle {
+        CustomButtonStyle(
+            backgroundColor: Color.greyDim50,
+            foregroundColor: Color.grey20,
+            borderColor: Color.grey10
         )
     }
 }

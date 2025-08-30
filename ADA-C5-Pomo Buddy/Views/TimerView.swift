@@ -11,6 +11,7 @@ struct TimerView: View {
     @Environment(TimerViewModel.self) private var _viewModel
     @Environment(ThemeManager.self) private var themeManager
     @Environment(\.colorScheme) private var colorScheme
+    
     @State private var isShowingWorkTypeEditor: Bool = false
     
     var body: some View {
@@ -28,29 +29,25 @@ struct TimerView: View {
             
             Text(viewModel.timeString)
                 .foregroundStyle(theme.timerViewTheme.timer)
-                .font(.custom("Menlo-Bold", size: AppFont.text6xl))
+                .font(.B2)
+                .padding(.bottom, 50)
             
-            /// TODO: 이미지로 전환
-            VStack {}
-            .frame(width: 100, height: 100)
-            .background(.gray)
-            .cornerRadius(100)
-            .padding(.vertical, 40)
+            explainText(theme: theme)
+                .padding(.bottom, 18)
+            
+            Image(theme.character)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 173)
             
             buttonActionView(theme: theme)
                 .frame(maxWidth: 240)
-                .padding(.bottom, 24)
-            
-            explainText(theme: theme)
-            
-            Spacer()
-            
-            settingStateText(theme: theme)
+                .padding(.top, 60)
+                .padding(.bottom, 72)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.top, 24)
-        .padding(.bottom, 40)
-        .background(theme.background)
+        .padding(.top, 40)
+        .background(theme.timerViewTheme.background)
         .sheet(isPresented: $isShowingWorkTypeEditor) {
             WorkTypeEditView(workType: $viewModel.workType)
         }
@@ -63,12 +60,14 @@ extension TimerView {
             Image("Coin")
             Text("\(_viewModel.completedSessionCount)")
                 .foregroundStyle(theme.timerViewTheme.coin)
+                .font(.M4)
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 12)
-        .background(theme.cardBackground)
-        .cornerRadius(100)
-        .shadowLG()
+        .overlay(
+            RoundedRectangle(cornerRadius: 100)
+                .stroke(Color.yellow1, lineWidth: 1)
+        )
     }
     
     private func workingTypeView(theme: AppTheme) -> some View {
@@ -78,10 +77,10 @@ extension TimerView {
             HStack(alignment: .bottom) {
                 Text(_viewModel.workType)
                     .foregroundStyle(theme.timerViewTheme.workingType)
-                    .font(.system(size: AppFont.textBase, weight: .regular))
+                    .font(.R5)
                 
-                Image(systemName: "pencil.line")
-                    .font(.system(size: 13))
+                Image(systemName: "square.and.pencil")
+                    .font(.system(size: 22))
                     .foregroundStyle(theme.timerViewTheme.pencil)
             }
         }
@@ -90,80 +89,43 @@ extension TimerView {
     private func buttonActionView(theme: AppTheme) -> some View {
         HStack {
             switch _viewModel.timerState {
-            case .focusing:
-                HStack(spacing: 12) {
-                    Button {
-                        _viewModel.giveUp()
-                    } label: {
-                        Text("timerView_button_giveUp")
-                    }
-                    .buttonStyle(
-                        CustomButtonStyle(
-                            backgroundColor: theme.buttonTheme.redBackgorund,
-                            foregroundColor: theme.buttonTheme.redForground
-                        )
-                    )
-                    
-                    Button {
-                        _viewModel.pause()
-                    } label: {
-                        Text("timerView_button_pause")
-                    }
-                    .buttonStyle(
-                        CustomButtonStyle(
-                            backgroundColor: theme.buttonTheme.yellowBackground,
-                            foregroundColor: theme.buttonTheme.yellowForground
-                        )
-                    )
+            case .idle:
+                Button {
+                    _viewModel.start()
+                } label: {
+                    Text("timerView_button_start")
                 }
+                .buttonStyle(.primary)
+            case .focusing:
+                Button {
+                    _viewModel.pause()
+                } label: {
+                    Text("timerView_button_pause")
+                }
+                .buttonStyle(.secondary)
             case .breaking:
                 Button {
                     _viewModel.skipBreak()
                 } label: {
                     Text("timerView_button_skipBreak")
                 }
-                .buttonStyle(
-                    CustomButtonStyle(
-                        backgroundColor: theme.buttonTheme.greenBackground,
-                        foregroundColor: theme.buttonTheme.greenForground
-                    )
-                )
+                .buttonStyle(.secondary)
             case .paused:
-                Button {
-                    _viewModel.giveUp()
-                } label: {
-                    Text("timerView_button_giveUp")
+                HStack(spacing: 12) {
+                    Button {
+                        _viewModel.giveUp()
+                    } label: {
+                        Text("timerView_button_giveUp")
+                    }
+                    .buttonStyle(.inactive)
+                    
+                    Button {
+                        _viewModel.resume()
+                    } label: {
+                        Text("timerView_button_resume")
+                    }
+                    .buttonStyle(.secondary)
                 }
-                .buttonStyle(
-                    CustomButtonStyle(
-                        backgroundColor: theme.buttonTheme.redBackgorund,
-                        foregroundColor: theme.buttonTheme.redForground
-                    )
-                )
-                
-                Button {
-                    _viewModel.resume()
-                } label: {
-                    Text("timerView_button_resume")
-                }
-                .buttonStyle(
-                    CustomButtonStyle(
-                        backgroundColor: theme.buttonTheme.yellowBackground,
-                        foregroundColor: theme.buttonTheme.yellowForground
-                    )
-                )
-            default:
-                Button {
-                    _viewModel.start()
-                } label: {
-                    Text("timerView_button_start")
-                }
-                .buttonStyle(
-                    CustomButtonStyle(
-                        backgroundColor: theme.buttonTheme.yellowBackground,
-                        foregroundColor: theme.buttonTheme.yellowForground
-                    )
-                )
             }
         }
     }
@@ -184,17 +146,6 @@ extension TimerView {
         
         return Text(explainText)
             .foregroundStyle(theme.timerViewTheme.explain)
-            .font(.system(size: AppFont.textLg, weight: .regular))
-    }
-
-    private func settingStateText(theme: AppTheme) -> some View {
-        let formatString = NSLocalizedString("timerView_text_settingState", comment: "")
-        let settingText = String(format: formatString,
-                                 _viewModel.focusTimeInMinutes,
-                                 _viewModel.breakTimeInMinutes)
-        
-        return Text(settingText)
-            .font(.system(size: AppFont.textSm, weight: .regular))
-            .foregroundStyle(theme.timerViewTheme.settingState)
+            .font(.R4)
     }
 }

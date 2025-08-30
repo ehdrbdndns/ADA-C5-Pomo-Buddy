@@ -43,3 +43,8 @@
 // MARK: - Appearance Settings
 "settingsView_section_appearance" = "Appearance";
 "appearanceMode_darkMode_toggle" = "Dark Mode";
+
+// MARK: - Appearance Navigation
+"navigation_home" = "Home";
+"navigation_calendar" = "Calendar";
+"navigation_settings" = "Settings";

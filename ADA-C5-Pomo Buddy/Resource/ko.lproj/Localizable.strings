@@ -42,3 +42,8 @@
 // MARK: - Appearance Settings
 "settingsView_section_appearance" = "화면 스타일";
 "appearanceMode_darkMode_toggle" = "다크 모드";
+
+// MARK: - Appearance Navigation
+"navigation_home" = "홈";
+"navigation_calendar" = "캘린더";
+"navigation_settings" = "설정";
