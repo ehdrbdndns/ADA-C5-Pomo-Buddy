@@ -19,29 +19,16 @@
 "timerView_text_explanationPaused" = "잠시 멈췄어요. 다시 시작해볼까요? ⏸️";
 "timerView_text_settingState" = "뽀모도로 타이머 • %d분 집중, %d분 휴식";
 
-// MARK: - WorkTypeEditView
-"workTypeEditView_title" = "작업 이름 수정";
-"workTypeEditView_placeholder" = "작업 이름을 입력하세요";
-"workTypeEditView_button_done" = "완료";
-"workTypeEditView_button_cancel" = "취소";
-
-// MARK: - SettingsView
-"settingsView_title" = "설정";
-"settingsView_section_timerSettings" = "타이머 설정";
-"settingsView_timer_focusDuration" = "집중 시간";
-"settingsView_timer_breakDuration" = "휴식 시간";
-"settingsView_timer_autoStart" = "다음 세션 자동 시작";
-"settingsView_section_quickSettings" = "빠른 설정";
-"settingsView_quickSettings_classic" = "클래식 세션";
-"settingsView_quickSettings_classic_detail" = "(25분 / 5분)";
-"settingsView_quickSettings_extended" = "확장 세션";
-"settingsView_quickSettings_extended_detail" = "(45분 / 15분)";
-"settingsView_quickSettings_quick" = "빠른 세션";
-"settingsView_quickSettings_quick_detail" = "(15분 / 3분)";
-
-// MARK: - Appearance Settings
-"settingsView_section_appearance" = "화면 스타일";
-"appearanceMode_darkMode_toggle" = "다크 모드";
+// MARK: - WorkTypeModalView Texts
+"workTypeModalView_text_selectWorkType" = "작업 선택";
+"workTypeModalView_text_AutoTimer" = "자동 타이머";
+"workTypeModalView_text_createNewWork" = "작업 생성";
+"workTypeModalView_text_workName" = "작업 이름";
+"workTypeModalView_text_enterWorkName" = "작업 이름을 입력하세요.";
+"workTypeModalView_text_focusTime" = "집중시간";
+"workTypeModalView_text_breakTime" = "쉬는시간";
+"workTypeModalView_text_min" = "분";
+"workTypeModalView_text_save" = "저장";
 
 // MARK: - Appearance Navigation
 "navigation_home" = "홈";

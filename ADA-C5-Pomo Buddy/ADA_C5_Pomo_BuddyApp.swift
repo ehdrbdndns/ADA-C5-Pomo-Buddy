@@ -21,7 +21,7 @@ struct ADA_C5_Pomo_BuddyApp: App {
             WorkType.self
         ])
         
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
         
         do {
             modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])

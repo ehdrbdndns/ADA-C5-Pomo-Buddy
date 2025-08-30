@@ -18,37 +18,36 @@ struct TimerView: View {
         @Bindable var viewModel = _viewModel
         let theme = themeManager.currentTheme.theme(for: viewModel.timerState, in: colorScheme)
         
-        VStack(spacing: 0) {
-            coinView(theme: theme)
-            
-            Spacer()
-            
-            workingTypeView(theme: theme)
-                .padding(.bottom, 12)
-            
-            Text(viewModel.timeString)
-                .foregroundStyle(theme.timerViewTheme.timer)
-                .font(.B2)
-                .padding(.bottom, 50)
-            
-            explainText(theme: theme)
-                .padding(.bottom, 18)
-            
-            Image(theme.character)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 173)
-            
-            buttonActionView(theme: theme)
-                .frame(maxWidth: 240)
-                .padding(.top, 60)
-                .padding(.bottom, 72)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.top, 40)
-        .background(theme.timerViewTheme.background)
-        .sheet(isPresented: $isShowingWorkTypeEditor) {
-            WorkTypeEditView(workType: $viewModel.workType)
+        ZStack {
+            VStack(spacing: 0) {
+                coinView(theme: theme)
+                
+                Spacer()
+                
+                workingTypeView(theme: theme)
+                    .padding(.bottom, 12)
+                
+                Text(viewModel.timeString)
+                    .foregroundStyle(theme.timerViewTheme.timer)
+                    .font(.B2)
+                    .padding(.bottom, 50)
+                
+                explainText(theme: theme)
+                    .padding(.bottom, 18)
+                
+                Image(theme.character)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 173)
+                
+                buttonActionView(theme: theme)
+                    .frame(maxWidth: 240)
+                    .padding(.top, 60)
+                    .padding(.bottom, 72)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.top, 40)
+            .background(theme.timerViewTheme.background)
         }
     }
 }
