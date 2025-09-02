@@ -9,7 +9,7 @@ extension Font {
     // MARK: - Bold
     
     /// Menlo Bold, 40pt
-    static let B1: Font = .custom("Menlo", size: 40).weight(.bold)
+    static let B1: Font = .custom("Menlo", size: 36).weight(.bold)
 
     /// Menlo Bold, 64pt
     static let B2: Font = .custom("Menlo", size: 64).weight(.bold)
@@ -49,4 +49,10 @@ extension Font {
     
     /// Quicksand Regular, 20pt
     static let R5: Font = .custom("Quicksand", size: 20).weight(.regular)
+    
+    /// Quicksand Regular, 18pt
+    static let R6: Font = .custom("Quicksand", size: 18).weight(.regular)
+    
+    /// Quicksand Regular, 22pt
+    static let R7: Font = .custom("Quicksand", size: 22).weight(.regular)
 }

@@ -7,15 +7,11 @@ struct ContentView: View {
                 TimerView()
             }
             
-            Tab("navigation_calendar", systemImage: "calendar") {
-                HistoryView()
-            }
-            
             Tab("navigation_settings", systemImage: "gear") {
                 SettingsView()
             }
         }
-        .font(.custom("Quicksand", size: AppFont.textBase))
+        .accentColor(Color(hex: "#DEAE00"))
         .ignoresSafeArea()
     }
 }

@@ -18,38 +18,47 @@ struct TimerView: View {
         @Bindable var viewModel = _viewModel
         let theme = themeManager.currentTheme.theme(for: viewModel.timerState, in: colorScheme)
         
-        VStack(spacing: 0) {
-            // coin
-            coinView(theme: theme)
+        ZStack {
+            VStack(spacing: 0) {
+                coinView(theme: theme)
+                
+                Spacer()
+                
+                workingTypeView(theme: theme)
+                    .padding(.bottom, 12)
+                
+                timerText()
+                    .foregroundStyle(theme.timerViewTheme.timer)
+                    .font(.B2)
+                    .padding(.bottom, 50)
+                
+                explainText(theme: theme)
+                    .padding(.bottom, 18)
+                
+                Image(theme.character)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 173)
+                
+                buttonActionView(theme: theme)
+                    .frame(maxWidth: 240)
+                    .padding(.top, 60)
+                    .padding(.bottom, 72)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.top, 40)
+            .background(theme.timerViewTheme.background)
             
-            Spacer()
-            
-            workingTypeView(theme: theme)
-                .padding(.bottom, 12)
-            
-            Text(viewModel.timeString)
-                .foregroundStyle(theme.timerViewTheme.timer)
-                .font(.B2)
-                .padding(.bottom, 50)
-            
-            explainText(theme: theme)
-                .padding(.bottom, 18)
-            
-            Image(theme.character)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 173)
-            
-            buttonActionView(theme: theme)
-                .frame(maxWidth: 240)
-                .padding(.top, 60)
-                .padding(.bottom, 72)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.top, 40)
-        .background(theme.timerViewTheme.background)
-        .sheet(isPresented: $isShowingWorkTypeEditor) {
-            WorkTypeEditView(workType: $viewModel.workType)
+            if isShowingWorkTypeEditor {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        isShowingWorkTypeEditor = false
+                    }
+                
+                WorkTypeModalView(isShowing: $isShowingWorkTypeEditor)
+                    .padding(.horizontal, 12)
+            }
         }
     }
 }
@@ -75,15 +84,18 @@ extension TimerView {
             isShowingWorkTypeEditor = true
         } label: {
             HStack(alignment: .bottom) {
-                Text(_viewModel.workType)
+                Text(_viewModel.workType?.name ?? "")
                     .foregroundStyle(theme.timerViewTheme.workingType)
                     .font(.R5)
                 
-                Image(systemName: "square.and.pencil")
-                    .font(.system(size: 22))
-                    .foregroundStyle(theme.timerViewTheme.pencil)
+                if _viewModel.timerState == .idle {
+                    Image(systemName: "square.and.pencil")
+                        .font(.R5)
+                        .foregroundStyle(theme.timerViewTheme.pencil)
+                }
             }
         }
+        .disabled(_viewModel.timerState != .idle)
     }
     
     private func buttonActionView(theme: AppTheme) -> some View {
@@ -109,7 +121,7 @@ extension TimerView {
                 } label: {
                     Text("timerView_button_skipBreak")
                 }
-                .buttonStyle(.secondary)
+                .buttonStyle(.blue)
             case .paused:
                 HStack(spacing: 12) {
                     Button {
@@ -147,5 +159,17 @@ extension TimerView {
         return Text(explainText)
             .foregroundStyle(theme.timerViewTheme.explain)
             .font(.R4)
+    }
+    
+    private func timerText() -> some View {
+        let timeToDisplay: TimeInterval
+        
+        if _viewModel.timerState == .idle {
+            timeToDisplay = _viewModel.workType?.focusDuration ?? 0
+        } else {
+            timeToDisplay = _viewModel.timeRemaining
+        }
+        
+        return Text(timeToDisplay.formattedTimeString)
     }
 }

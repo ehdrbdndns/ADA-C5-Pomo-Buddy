@@ -1,4 +1,3 @@
-
 /* 
   Localizable.strings
   ADA-C5-Pomo Buddy
@@ -15,36 +14,29 @@
 
 // MARK: - TimerView Texts
 "timerView_text_explanationIdle" = "Ready to focus? Let’s go! 🐹";
-"timerView_text_explanationFocusing" = "Stay focused! You’ve got this! 🏃‍♀️";
-"timerView_text_explanationBreaking" = "Great Job! 🎉 Enjoy your break! 😴";
+"timerView_text_explanationFocusing" = "Stay focused! 🏃‍♀️";
+"timerView_text_explanationBreaking" = "Great Job! 🎉";
 "timerView_text_explanationPaused" = "Take a moment, then continue! ⏸️";
 "timerView_text_settingState" = " Pomodoro Timer • %d min focus, %d min break";
 
-// MARK: - WorkTypeEditView
-"workTypeEditView_title" = "Edit Work Type";
-"workTypeEditView_placeholder" = "Enter work type";
-"workTypeEditView_button_done" = "Done";
-"workTypeEditView_button_cancel" = "Cancel";
+// MARK: - WorkypeModalView Text
+"workTypeModalView_text_selectWorkType" = "Select Work Type";
+"workTypeModalView_text_AutoTimer" = "Auto Timer";
+"workTypeModalView_text_createNewWork" = "Create New Work";
+"workTypeModalView_text_workName" = "Work Name";
+"workTypeModalView_text_enterWorkName" = "Enter work name";
+"workTypeModalView_text_focusTime" = "Focus Time";
+"workTypeModalView_text_breakTime" = "Break Time";
+"workTypeModalView_text_min" = "min";
+"workTypeModalView_text_save" = "Save";
 
-// MARK: - SettingsView
-"settingsView_title" = "Settings";
-"settingsView_section_timerSettings" = "Timer Settings";
-"settingsView_timer_focusDuration" = "Focus Duration";
-"settingsView_timer_breakDuration" = "Break Duration";
-"settingsView_timer_autoStart" = "Start Next Session Automatically";
-"settingsView_section_quickSettings" = "Quick Settings";
-"settingsView_quickSettings_classic" = "Classic Session";
-"settingsView_quickSettings_classic_detail" = "(25 min / 5 min)";
-"settingsView_quickSettings_extended" = "Extended Session";
-"settingsView_quickSettings_extended_detail" = "(45 min / 15 min)";
-"settingsView_quickSettings_quick" = "Quick Session";
-"settingsView_quickSettings_quick_detail" = "(15 min / 3 min)";
-
-// MARK: - Appearance Settings
-"settingsView_section_appearance" = "Appearance";
-"appearanceMode_darkMode_toggle" = "Dark Mode";
 
 // MARK: - Appearance Navigation
 "navigation_home" = "Home";
-"navigation_calendar" = "Calendar";
 "navigation_settings" = "Settings";
+
+// MARK: - WorkTypeListView Alert
+"workTypeListView_alert_delete_title" = "Delete Work Type";
+"workTypeListView_alert_delete_message" = "Are you sure you want to delete '%@'?";
+"workTypeListView_alert_delete_confirm" = "Delete";
+"workTypeListView_alert_delete_cancel" = "Cancel";

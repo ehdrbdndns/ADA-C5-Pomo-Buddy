@@ -1,6 +1,8 @@
 import Foundation
 import SwiftData
 
+// MARK: - Supporting Enums
+
 /// Enum to manage language settings in a type-safe way.
 enum LanguageSetting: String, Codable {
     case systemDefault
@@ -29,29 +31,34 @@ enum AppearanceMode: String, Codable, CaseIterable {
     }
 }
 
+// MARK: - Main SwiftData Model
+
 @Model
 final class TimerSettings {
-    var focusDuration: TimeInterval
-    var breakDuration: TimeInterval
+    // MARK: - Properties
+    
     var isAutoTimerEnabled: Bool
     var language: LanguageSetting
     var selectedCharacter: CharacterType
-    var workType: String
     var appearance: AppearanceMode
+    
+    @Relationship(deleteRule: .cascade)
+    var workList: [WorkType] = []
+    
+    var selectedWorkType: WorkType?
 
-    init(focusDuration: TimeInterval = 25 * 60, 
-         breakDuration: TimeInterval = 5 * 60, 
-         isAutoTimerEnabled: Bool = false, 
-         language: LanguageSetting = .systemDefault,
-         selectedCharacter: CharacterType = .default,
-         workType: String = "Pomodoro",
-         appearance: AppearanceMode = .light) {
-        self.focusDuration = focusDuration
-        self.breakDuration = breakDuration
-        self.isAutoTimerEnabled = isAutoTimerEnabled
-        self.language = language
-        self.selectedCharacter = selectedCharacter
-        self.workType = workType
-        self.appearance = appearance
+    // MARK: - Initialization
+    
+    init() {
+        self.isAutoTimerEnabled = false
+        self.language = .systemDefault
+        self.selectedCharacter = .default
+        self.appearance = .light
+        self.workList = []
+        self.selectedWorkType = nil
+    }
+    
+    var currentWorkType: WorkType? {
+        selectedWorkType ?? workList.first
     }
 }
