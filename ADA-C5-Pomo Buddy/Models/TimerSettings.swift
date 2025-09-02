@@ -1,3 +1,4 @@
+import SwiftUI
 import Foundation
 import SwiftData
 
@@ -13,7 +14,20 @@ enum LanguageSetting: String, Codable {
 /// Enum to manage character types in a type-safe way.
 enum CharacterType: String, Codable {
     case `default`
-    // Future characters can be added here, e.g., case cat, case hamster
+    
+    var displayName: LocalizedStringKey {
+        switch self {
+        case .`default`:
+            return "character_name_default"
+        }
+    }
+    
+    var imageName: String {
+        switch self {
+        case .`default`:
+            return "hamster-idle"
+        }
+    }
 }
 
 /// Enum to manage the app's appearance mode.
