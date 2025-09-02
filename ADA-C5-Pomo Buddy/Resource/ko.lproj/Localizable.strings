@@ -34,3 +34,15 @@
 "navigation_home" = "홈";
 "navigation_calendar" = "캘린더";
 "navigation_settings" = "설정";
+
+
+// MARK: - Appearance Settings
+"appearance_settings_title" = "화면 설정";
+"appearanceMode_light" = "라이트 모드";
+"appearanceMode_dark" = "다크 모드";
+
+// MARK: - WorkTypeListView Alert
+"workTypeListView_alert_delete_title" = "업무 타입 삭제";
+"workTypeListView_alert_delete_message" = "'%@' 업무 타입을 정말 삭제하시겠습니까?";
+"workTypeListView_alert_delete_confirm" = "삭제";
+"workTypeListView_alert_delete_cancel" = "취소";

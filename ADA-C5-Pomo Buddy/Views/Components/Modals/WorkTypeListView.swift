@@ -1,12 +1,10 @@
-
 import SwiftUI
 
 struct WorkTypeListView: View {
-    // 1. 부모 뷰의 상태를 제어하기 위한 Binding 변수
-    @Binding var currentState: WorkTypeModalView.ModalState
+    @Environment(TimerViewModel.self) private var _viewModel
     
-    // autoTimerView가 사용하는 State 변수도 함께 이전
-    @State private var isAutoTimerOn = false
+    @Binding var currentState: WorkTypeModalView.ModalState
+    @State private var workTypeToDelete: WorkType?
 
     var body: some View {
         VStack {
@@ -19,39 +17,45 @@ struct WorkTypeListView: View {
             
             autoTimerView()
         }
+        .alert(item: $workTypeToDelete) { workType in
+            Alert(
+                title: Text("workTypeListView_alert_delete_title"),
+                message: Text(String(format: NSLocalizedString("workTypeListView_alert_delete_message", comment: ""), workType.name)),
+                primaryButton: .destructive(Text("workTypeListView_alert_delete_confirm")) {
+                    _viewModel.deleteWorkType(workType)
+                },
+                secondaryButton: .cancel(Text("workTypeListView_alert_delete_cancel"))
+            )
+        }
     }
 }
 
 extension WorkTypeListView {
     func galleryView() -> some View {
-        Grid(horizontalSpacing: 12, verticalSpacing: 12) {
-            GridRow {
+        let columns = [
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ]
+        
+        return LazyVGrid(columns: columns, spacing: 12) {
+            ForEach(_viewModel.settings?.workList ?? [], id: \.id) { workType in
                 workCellView(
-                    content: "Coding",
-                    caption: "40min/10min",
-                    isSelected: true
+                    content: workType.name,
+                    caption: "\(workType.focusDurationInMinutes)min / \(workType.breakDurationInMinutes)min",
+                    isSelected: workType.id == _viewModel.workType?.id
                 )
-                workCellView(
-                    content: "Coding",
-                    caption: "40min/10min",
-                    isSelected: false
-                )
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    _viewModel.workType = workType
+                }
+                .onLongPressGesture {
+                    if _viewModel.workTypeList.count > 1 {
+                        self.workTypeToDelete = workType
+                    }
+                }
             }
             
-            GridRow {
-                workCellView(
-                    content: "Coding",
-                    caption: "40min/10min",
-                    isSelected: false
-                )
-                workCellView(
-                    content: "Coding",
-                    caption: "40min/10min",
-                    isSelected: false
-                )
-            }
-            
-            GridRow {
+            if (_viewModel.workTypeList.count < 6) {
                 makeCellButtonView()
             }
         }
@@ -85,7 +89,6 @@ extension WorkTypeListView {
     
     func makeCellButtonView() -> some View {
         Button {
-            // 2. 버튼을 누르면 부모 뷰의 상태를 .addingNew로 변경
             currentState = .addingNew
         } label: {
             VStack {
@@ -112,14 +115,16 @@ extension WorkTypeListView {
     }
     
     func autoTimerView() -> some View {
-        HStack {
+        @Bindable var viewModel = _viewModel
+        
+        return HStack {
             Text("workTypeModalView_text_AutoTimer")
                 .font(.R6)
                 .foregroundColor(.black)
 
             Spacer()
 
-            Toggle("", isOn: $isAutoTimerOn)
+            Toggle("", isOn: $viewModel.isAutoTimerEnabled)
                 .tint(Color(hex: "#5BDA30"))
         }
         .padding(.horizontal, 22)
@@ -138,7 +143,6 @@ extension WorkTypeListView {
 #Preview {
     ZStack {
         Color.blackDim20.ignoresSafeArea()
-        // 3. 프리뷰가 정상 동작하도록 .constant 바인딩 제공
         WorkTypeListView(currentState: .constant(.showingList))
             .padding()
     }

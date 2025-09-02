@@ -1,6 +1,11 @@
 import SwiftUI
+import SwiftData
 
 struct AddWorkTypeView: View {
+    // MARK: - Environment
+    @Environment(\.modelContext) private var modelContext
+    @Environment(TimerViewModel.self) private var viewModel
+    
     // 1. 부모 뷰의 상태를 제어하기 위한 Binding 변수
     @Binding var currentState: WorkTypeModalView.ModalState
     
@@ -8,6 +13,11 @@ struct AddWorkTypeView: View {
     @State private var presetName: String = ""
     @State private var focusTime: Int = 25
     @State private var breakTime: Int = 5
+
+    // 이름이 비어있는지 확인하는 계산 프로퍼티
+    private var isNameEmpty: Bool {
+        presetName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -79,7 +89,10 @@ private extension AddWorkTypeView {
                 
                 HStack(spacing: 0) {
                     Button {
-                        time.wrappedValue -= 1
+                        // 1분 미만으로 내려가지 않도록 방지
+                        if time.wrappedValue > 1 {
+                            time.wrappedValue -= 1
+                        }
                     } label: {
                         Image(systemName: "minus")
                             .font(.system(size: 15))
@@ -110,22 +123,32 @@ private extension AddWorkTypeView {
     
     func saveButton() -> some View {
         Button {
+            guard !isNameEmpty else { return }
+            
+            viewModel.addWorkType(
+                name: presetName,
+                focusMinutes: focusTime,
+                breakMinutes: breakTime
+            )
+            
             currentState = .showingList
+            
         } label: {
             Text("workTypeModalView_text_save")
                 .font(.SB1)
-                .foregroundColor(Color.yellow2)
+                .foregroundColor(isNameEmpty ? .gray : Color.yellow2)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .background(
-                    Color.yellowDim20
+                    isNameEmpty ? Color.gray.opacity(0.2) : Color.yellowDim20
                 )
                 .cornerRadius(100)
                 .overlay(
                     RoundedRectangle(cornerRadius: 100)
-                        .stroke(Color.yellow1, lineWidth: 1) // #FAE363
+                        .stroke(isNameEmpty ? .gray : Color.yellow1, lineWidth: 1)
                 )
         }
+        .disabled(isNameEmpty)
     }
 }
 

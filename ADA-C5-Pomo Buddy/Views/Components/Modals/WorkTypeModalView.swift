@@ -11,7 +11,6 @@ struct WorkTypeModalView: View {
         case showingList
         case addingNew
     }
-    
     @State private var currentState: ModalState = .showingList
     @Binding var isShowing: Bool
     
@@ -32,7 +31,6 @@ struct WorkTypeModalView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(.white)
         )
-        .animation(.spring(), value: currentState)
     }
 }
 
