@@ -1,3 +1,4 @@
+
 /* 
   Localizable.strings
   ADA-C5-Pomo Buddy
@@ -40,3 +41,11 @@
 "workTypeListView_alert_delete_message" = "Are you sure you want to delete '%@'?";
 "workTypeListView_alert_delete_confirm" = "Delete";
 "workTypeListView_alert_delete_cancel" = "Cancel";
+
+// MARK: - SettingsView
+"settings_section_support" = "Support";
+"settings_button_contact_us" = "Contact Us";
+"settings_button_privacy_policy" = "Privacy Policy";
+
+// MARK: - Character
+"character_name_default" = "Bbo-mo";

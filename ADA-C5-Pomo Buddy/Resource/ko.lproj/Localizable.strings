@@ -1,3 +1,4 @@
+
 /* 
   Localizable.strings
   ADA-C5-Pomo Buddy
@@ -46,3 +47,11 @@
 "workTypeListView_alert_delete_message" = "'%@' 업무 타입을 정말 삭제하시겠습니까?";
 "workTypeListView_alert_delete_confirm" = "삭제";
 "workTypeListView_alert_delete_cancel" = "취소";
+
+// MARK: - SettingsView
+"settings_section_support" = "고객지원";
+"settings_button_contact_us" = "문의하기";
+"settings_button_privacy_policy" = "개인정보 처리방침";
+
+// MARK: - Character
+"character_name_default" = "뽀모";
