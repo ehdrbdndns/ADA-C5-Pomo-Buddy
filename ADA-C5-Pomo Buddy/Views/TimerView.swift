@@ -88,11 +88,14 @@ extension TimerView {
                     .foregroundStyle(theme.timerViewTheme.workingType)
                     .font(.R5)
                 
-                Image(systemName: "square.and.pencil")
-                    .font(.R5)
-                    .foregroundStyle(theme.timerViewTheme.pencil)
+                if _viewModel.timerState == .idle {
+                    Image(systemName: "square.and.pencil")
+                        .font(.R5)
+                        .foregroundStyle(theme.timerViewTheme.pencil)
+                }
             }
         }
+        .disabled(_viewModel.timerState != .idle)
     }
     
     private func buttonActionView(theme: AppTheme) -> some View {
