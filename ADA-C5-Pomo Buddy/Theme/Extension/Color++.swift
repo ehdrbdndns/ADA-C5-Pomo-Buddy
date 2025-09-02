@@ -39,6 +39,12 @@ extension Color {
     static let yellow1 = Color(hex: "#FAE363")
     static let yellow2 = Color(hex: "#452200")
     static let yellow3 = Color(hex: "#973C00")
+    static let yellow4 = Color(hex: "#DEAE00")
+    
+    static let blue1 = Color(hex: "#2763BC")
+    static let blue2 = Color(hex: "#428EFF")
+    static let blueDim20 = Color(hex: "#2763BC").opacity(0.2)
+    
     static let toggle = Color(hex: "#CCCED4")
 
     static let redDim10 = Color(hex: "#FF6467").opacity(0.1)

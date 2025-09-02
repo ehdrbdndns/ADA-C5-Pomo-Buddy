@@ -11,7 +11,7 @@ struct ContentView: View {
                 SettingsView()
             }
         }
-        .accentColor(Color(hex: "#D5B400"))
+        .accentColor(Color(hex: "#DEAE00"))
         .ignoresSafeArea()
     }
 }

@@ -21,6 +21,8 @@ This GEMINI.md document is the sole specification for this project. All discussi
     *   **FocusSession**: A time block for focused work.
     *   **BreakSession**: A time block for resting.
 
+*   **WorkType**: A user-defined preset that contains a name, a specific focus duration, and a specific break duration. The user can create and manage multiple `WorkType`s.
+
 *   **Cycle**: A completed pair of one FocusSession and its subsequent BreakSession.
 
 *   **Seed (or RewardItem)**: The visual unit of reward. One is earned **only upon the successful completion of a FocusSession**. Giving up a session does not earn a seed.
@@ -52,7 +54,7 @@ The project will be built using the **MVVM (Model-View-ViewModel)** pattern.
 *   **Localization**: Standard SwiftUI Localization using `.strings` files.
 
 ### 3.3. Folder Structure
-*   `/Models`: Contains SwiftData models (`TimerSettings`, `FocusLog`).
+*   `/Models`: Contains SwiftData models (`TimerSettings`, `FocusLog`, `WorkType`).
 *   `/Views`: Contains all SwiftUI views.
     *   `/Views/Components`: Contains reusable, smaller view components.
 *   `/ViewModels`: Contains the ViewModel classes (`TimerViewModel`).
@@ -63,9 +65,12 @@ The project will be built using the **MVVM (Model-View-ViewModel)** pattern.
     *   `/Resource/ko.lproj/Localizable.strings`
 
 ### 3.4. Main View Descriptions
-*   **TimerView**: The main screen for the Pomodoro timer operation, character interaction, and session progress.
-*   **SettingsView**: A screen where the user can configure timer durations, auto-start preferences, and the app's appearance (Light/Dark Mode).
+*   **TimerView**: The main screen for the Pomodoro timer operation, character interaction, and session progress. It includes a button to present the `WorkTypeModalView`.
+*   **SettingsView**: A screen where the user can configure app-wide preferences like the app's appearance (Light/Dark Mode).
 *   **HistoryView**: (To be implemented) A screen to view logs of past focus sessions.
+*   **WorkTypeModalView**: A modal view presented from the `TimerView`. It acts as a container that switches between `WorkTypeListView` and `AddWorkTypeView`.
+*   **WorkTypeListView**: A view that displays a grid of all available `WorkType` presets and an 'add' button.
+*   **AddWorkTypeView**: A view with a form to create a new `WorkType` preset.
 
 ## 4. Development Workflow
 
@@ -96,24 +101,22 @@ To ensure clarity and prevent implicit changes, all proposed code modifications 
 
 *   **Principle**: Each proposal from Gemini will contain only a single, indivisible logical change.
 *   **Rationale**: This prevents bundling unrelated changes. It allows the lead developer to review and approve each modification granularly, ensuring full understanding and control.
-*   **Example**:
-    *   **Incorrect (Bundled)**: "I will fix the count bug and also refactor the time properties."
-    *   **Correct (Atomic)**: 
-        1.  "**Proposal 1:** I will fix the count bug using the 'save and then refetch' method. [Details...] Do you agree?"
-        2.  *(After approval)* "**Proposal 2:** Now, I will refactor the time properties for better data integrity using Computed Properties. [Details...] Do you agree?"
 
 ### 4.5. Codebase-Grounded Implementation Principle
-
 *   **Core Mandate**: Gemini **must not** write code that references any property, method, or value without first verifying its existence in the current codebase. All code generation must be grounded in direct, recent file analysis.
 
 *   **The Workflow**: Gemini must adhere to this strict, non-negotiable sequence:
-    1.  **Deconstruct the Goal**: Clearly state the primary objective (e.g., "Create SettingsView").
-    2.  **Map All Dependencies**: Before writing any code, list *every* external file and component the new code will reference. This includes, but is not limited to: ViewModels, Models, Theme files (colors, fonts), custom UI components, and utility classes.
-    3.  **Verify Reality via Code**: Use `read_file` or `read_many_files` to read all identified dependency files. This step is mandatory to build an accurate understanding of the current codebase. **No assumptions are permitted.**
-    4.  **Announce and Resolve Gaps First**: Compare the implementation plan against the verified reality of the codebase. If any required element (property, method, value) is missing, **STOP**. Announce the specific gap and propose a plan to modify the dependency file *first*.
+    1.  **Deconstruct the Goal**: Clearly state the primary objective.
+    2.  **Map All Dependencies**: Before writing any code, list *every* external file and component the new code will reference.
+    3.  **Verify Reality via Code**: Use `read_file` or `read_many_files` to read all identified dependency files.
+    4.  **Announce and Resolve Gaps First**: Compare the implementation plan against the verified reality of the codebase. If any required element is missing, **STOP**. Announce the specific gap and propose a plan to modify the dependency file *first*.
     5.  **Implement After Verification**: Only when all dependencies are confirmed to exist in the codebase, proceed to write the code for the original goal.
 
 *   **Rationale**: This workflow eradicates errors from "hallucinated" or assumed code. It forces a bottom-up, verifiable implementation process, ensuring all generated code is immediately valid and buildable.
+
+### 4.6. Initial Data Seeding
+*   **Principle**: To ensure the app has a valid default state on first launch, initial data is created programmatically.
+*   **Implementation**: In `ADA_C5_Pomo_BuddyApp.swift`, after the `ModelContainer` is created, a check is performed to see if a `TimerSettings` object exists. If not, a new `TimerSettings` object is created along with a default "Study" `WorkType`, and inserted into the database. This ensures the app always has at least one `WorkType` to select.
 
 ## 5. Code Patterns & Conventions
 

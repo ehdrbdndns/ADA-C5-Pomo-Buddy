@@ -45,6 +45,14 @@ extension ButtonStyle where Self == CustomButtonStyle {
         )
     }
     
+    static var blue: CustomButtonStyle {
+        CustomButtonStyle(
+            backgroundColor: Color.blueDim20,
+            foregroundColor: Color.blue1,
+            borderColor: Color.blue1
+        )
+    }
+    
     static var inactive: CustomButtonStyle {
         CustomButtonStyle(
             backgroundColor: Color.greyDim50,

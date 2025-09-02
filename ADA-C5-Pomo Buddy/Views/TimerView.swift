@@ -27,7 +27,7 @@ struct TimerView: View {
                 workingTypeView(theme: theme)
                     .padding(.bottom, 12)
                 
-                Text(viewModel.timeString)
+                timerText()
                     .foregroundStyle(theme.timerViewTheme.timer)
                     .font(.B2)
                     .padding(.bottom, 50)
@@ -58,10 +58,8 @@ struct TimerView: View {
                 
                 WorkTypeModalView(isShowing: $isShowingWorkTypeEditor)
                     .padding(.horizontal, 12)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .animation(.spring(), value: isShowingWorkTypeEditor)
     }
 }
 
@@ -86,7 +84,7 @@ extension TimerView {
             isShowingWorkTypeEditor = true
         } label: {
             HStack(alignment: .bottom) {
-                Text(_viewModel.workType)
+                Text(_viewModel.workType?.name ?? "")
                     .foregroundStyle(theme.timerViewTheme.workingType)
                     .font(.R5)
                 
@@ -120,7 +118,7 @@ extension TimerView {
                 } label: {
                     Text("timerView_button_skipBreak")
                 }
-                .buttonStyle(.secondary)
+                .buttonStyle(.blue)
             case .paused:
                 HStack(spacing: 12) {
                     Button {
@@ -158,5 +156,17 @@ extension TimerView {
         return Text(explainText)
             .foregroundStyle(theme.timerViewTheme.explain)
             .font(.R4)
+    }
+    
+    private func timerText() -> some View {
+        let timeToDisplay: TimeInterval
+        
+        if _viewModel.timerState == .idle {
+            timeToDisplay = _viewModel.workType?.focusDuration ?? 0
+        } else {
+            timeToDisplay = _viewModel.timeRemaining
+        }
+        
+        return Text(timeToDisplay.formattedTimeString)
     }
 }

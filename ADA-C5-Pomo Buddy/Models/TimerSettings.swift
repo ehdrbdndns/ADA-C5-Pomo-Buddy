@@ -42,8 +42,10 @@ final class TimerSettings {
     var selectedCharacter: CharacterType
     var appearance: AppearanceMode
     
-    @Relationship(deleteRule: .cascade) var workList: [WorkType] = []
-    var selectedWorkTypeID: UUID?
+    @Relationship(deleteRule: .cascade)
+    var workList: [WorkType] = []
+    
+    var selectedWorkType: WorkType?
 
     // MARK: - Initialization
     
@@ -53,10 +55,10 @@ final class TimerSettings {
         self.selectedCharacter = .default
         self.appearance = .light
         self.workList = []
-        self.selectedWorkTypeID = nil
+        self.selectedWorkType = nil
     }
     
-    var currentWorkType: WorkType {
-        workList.first(where: { $0.id == selectedWorkTypeID }) ?? workList.first!
+    var currentWorkType: WorkType? {
+        selectedWorkType ?? workList.first
     }
 }

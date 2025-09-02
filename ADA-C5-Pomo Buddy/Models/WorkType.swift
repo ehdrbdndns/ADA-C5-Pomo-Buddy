@@ -15,4 +15,14 @@ final class WorkType {
         self.focusDuration = focusDuration
         self.breakDuration = breakDuration
     }
+    
+    // MARK: - Computed Properties
+    
+    var focusDurationInMinutes: Int {
+        Int(focusDuration) / 60
+    }
+    
+    var breakDurationInMinutes: Int {
+        Int(breakDuration) / 60
+    }
 }
