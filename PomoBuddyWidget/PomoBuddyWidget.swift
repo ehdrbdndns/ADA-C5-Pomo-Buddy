@@ -20,7 +20,7 @@ struct PomoBuddyWidget: Widget {
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.8))
                 
-                Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
+                Text(context.state.timeRemaining)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -35,7 +35,7 @@ struct PomoBuddyWidget: Widget {
             DynamicIsland {
                 // MARK: Expanded UI
                 DynamicIslandExpandedRegion(.leading) {
-                    Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
+                    Text(context.state.timeRemaining)
                         .font(.title)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.trailing)
@@ -64,7 +64,7 @@ struct PomoBuddyWidget: Widget {
             } compactTrailing: {
                 // MARK: Compact Trailing UI
                 // 변경된 부분: 스스로 카운트다운하는 텍스트
-                Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
+                Text(context.state.timeRemaining)
                     .frame(width: 50) // 너비를 고정하여 글자 수 변경시 UI가 흔들리는 것을 방지
                 
             } minimal: {
