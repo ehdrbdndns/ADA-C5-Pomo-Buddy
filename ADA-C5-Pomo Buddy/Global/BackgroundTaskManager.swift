@@ -34,6 +34,7 @@ class BackgroundTaskManager {
     private func handleAppRefresh(task: BGAppRefreshTask) {
         task.expirationHandler = {
             task.setTaskCompleted(success: false)
+            print("expirationHandler called")
             self.cancelAll()
         }
 

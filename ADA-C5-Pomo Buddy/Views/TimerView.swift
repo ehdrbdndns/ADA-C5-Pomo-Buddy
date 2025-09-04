@@ -13,6 +13,7 @@ struct TimerView: View {
     @Environment(\.colorScheme) private var colorScheme
     
     @State private var isShowingWorkTypeEditor: Bool = false
+    @State private var isShowingGiveUpAlert: Bool = false
     
     var body: some View {
         @Bindable var viewModel = _viewModel
@@ -59,6 +60,14 @@ struct TimerView: View {
                 WorkTypeModalView(isShowing: $isShowingWorkTypeEditor)
                     .padding(.horizontal, 12)
             }
+        }
+        .alert("timerView_alert_giveUp_title", isPresented: $isShowingGiveUpAlert) {
+            Button("timerView_alert_giveUp_confirm", role: .destructive) {
+                viewModel.giveUp()
+            }
+            Button("workTypeListView_alert_delete_cancel", role: .cancel) { }
+        } message: {
+            Text("timerView_alert_giveUp_message")
         }
     }
 }
@@ -125,7 +134,7 @@ extension TimerView {
             case .paused:
                 HStack(spacing: 12) {
                     Button {
-                        _viewModel.giveUp()
+                        isShowingGiveUpAlert = true 
                     } label: {
                         Text("timerView_button_giveUp")
                     }

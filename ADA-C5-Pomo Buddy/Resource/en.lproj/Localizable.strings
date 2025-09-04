@@ -1,4 +1,3 @@
-
 /* 
   Localizable.strings
   ADA-C5-Pomo Buddy
@@ -49,3 +48,8 @@
 
 // MARK: - Character
 "character_name_default" = "Bbo-mo";
+
+// MARK: - TimerView Alert
+"timerView_alert_giveUp_title" = "Give Up";
+"timerView_alert_giveUp_message" = "Are you sure you want to give up the current session?";
+"timerView_alert_giveUp_confirm" = "Give Up";
