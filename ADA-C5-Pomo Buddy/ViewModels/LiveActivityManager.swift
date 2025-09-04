@@ -8,15 +8,15 @@ final class LiveActivityManager {
     
     // MARK: - Public Methods
     
-    func startLiveActivity(taskName: String, characterImageName: String, timeString: String, timeRemaining: TimeInterval) {
-        let attributes = PomoBuddyActivityAttributes(taskName: taskName, characterImageName: characterImageName)
+    func startLiveActivity(taskName: String, timeRemaining: TimeInterval, characterImageName: String) {
+        let attributes = PomoBuddyActivityAttributes(taskName: taskName)
         
-        // ViewModel로부터 받은 timeRemaining으로 endTime을 직접 계산합니다.
         let endTime = Date().addingTimeInterval(timeRemaining)
         let initialState = PomoBuddyActivityAttributes.ContentState(
             sessionState: "Focus",
-            timeRemaining: timeString,
-            endTime: endTime
+            timeRemaining: timeRemaining.formattedTimeString,
+            endTime: endTime,
+            characterImageName: characterImageName
         )
         
         do {
@@ -32,13 +32,13 @@ final class LiveActivityManager {
         }
     }
     
-    func updateLiveActivity(timeString: String, sessionState: String, timeRemaining: TimeInterval) {
-        // ViewModel로부터 받은 timeRemaining으로 endTime을 직접 계산합니다.
+    func updateLiveActivity(timeRemaining: TimeInterval, sessionState: String, characterImageName: String) {
         let endTime = Date().addingTimeInterval(timeRemaining)
         let updatedState = PomoBuddyActivityAttributes.ContentState(
             sessionState: sessionState,
-            timeRemaining: timeString,
-            endTime: endTime
+            timeRemaining: timeRemaining.formattedTimeString,
+            endTime: endTime,
+            characterImageName: characterImageName
         )
         
         Task {

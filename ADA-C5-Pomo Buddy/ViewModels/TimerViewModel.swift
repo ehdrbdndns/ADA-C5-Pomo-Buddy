@@ -1,4 +1,3 @@
-
 import Foundation
 import SwiftUI
 import SwiftData
@@ -85,13 +84,16 @@ final class TimerViewModel {
         resetTimer(to: .idle)
     }
     
+    // MARK: - Public Methods
     func start() {
         guard timerState == .idle || timerState == .breaking else { return }
-        timeRemaining = settings?.currentWorkType?.focusDuration ?? (25 * 60)
+        cancelAllScheduledTasks()
+        
         timerState = .focusing
+        timeRemaining = settings?.currentWorkType?.focusDuration ?? (25 * 60)
         
-        liveActivityManager.startLiveActivity(taskName: "코딩하기", characterImageName: "quokka_char_image", timeString: timeRemaining.formattedTimeString, timeRemaining: self.timeRemaining)
-        
+        liveActivityManager.startLiveActivity(taskName: workType?.name ?? "Focus", timeRemaining: timeRemaining, characterImageName: "hamster-focus")
+        scheduleSession(for: .focusing, duration: timeRemaining)
         runTimer()
     }
     
@@ -100,23 +102,27 @@ final class TimerViewModel {
         prePauseState = timerState
         timer?.invalidate()
         timerState = .paused
+        cancelAllScheduledTasks()
     }
     
     func resume() {
         guard timerState == .paused else { return }
         timerState = prePauseState
+        scheduleSession(for: timerState, duration: timeRemaining)
         runTimer()
     }
     
     func giveUp() {
         timer?.invalidate()
         liveActivityManager.endLiveActivity()
+        cancelAllScheduledTasks()
         resetTimer(to: .idle)
     }
     
     func skipBreak() {
         timer?.invalidate()
         liveActivityManager.endLiveActivity()
+        cancelAllScheduledTasks()
         resetTimer(to: .idle)
     }
     
@@ -150,6 +156,19 @@ final class TimerViewModel {
     
     // MARK: - Private Methods
     
+    private func scheduleSession(for state: TimerState, duration: TimeInterval) {
+        let title = (state == .focusing) ? "Focus session is over!" : "Break is over!"
+        let body = (state == .focusing) ? "Good job! Time for a break." : "Let's get back to focus."
+        
+        NotificationManager.shared.scheduleNotification(title: title, body: body, timeInSeconds: duration)
+        BackgroundTaskManager.shared.scheduleRefresh(at: Date().addingTimeInterval(duration))
+    }
+    
+    private func cancelAllScheduledTasks() {
+        NotificationManager.shared.cancelAllNotifications()
+        BackgroundTaskManager.shared.cancelAll()
+    }
+    
     private func runTimer() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
@@ -163,21 +182,16 @@ final class TimerViewModel {
             return
         }
         timeRemaining -= 1
-        
-        liveActivityManager.updateLiveActivity(
-            timeString: timeRemaining.formattedTimeString
-            , sessionState: self.timerState == .focusing ? "Focus" : "Break"
-            , timeRemaining: self.timeRemaining
-        )
     }
     
-    private func handleTimerCompletion() {
+    func handleTimerCompletion() {
         timer?.invalidate()
+        cancelAllScheduledTasks()
+
         switch timerState {
         case .focusing:
             transitionToBreak()
         case .breaking:
-            liveActivityManager.endLiveActivity()
             transitionToNextSession()
         default:
             resetTimer(to: .idle)
@@ -194,8 +208,8 @@ final class TimerViewModel {
         timerState = .breaking
         timeRemaining = settings.currentWorkType?.breakDuration ?? (5 * 60)
         
-        liveActivityManager.updateLiveActivity(timeString: timeRemaining.formattedTimeString, sessionState: "Break", timeRemaining: self.timeRemaining)
-        
+        liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, sessionState: "Break", characterImageName: "hamster-break")
+        scheduleSession(for: .breaking, duration: timeRemaining)
         runTimer()
     }
     
@@ -205,10 +219,11 @@ final class TimerViewModel {
             timerState = .focusing
             timeRemaining = settings.currentWorkType?.focusDuration ?? (25 * 60)
             
-            liveActivityManager.updateLiveActivity(timeString: timeRemaining.formattedTimeString, sessionState: "Focus", timeRemaining: self.timeRemaining)
-            
+            liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, sessionState: "Focus", characterImageName: "hamster-focus")
+            scheduleSession(for: .focusing, duration: timeRemaining)
             runTimer()
         } else {
+            liveActivityManager.endLiveActivity()
             resetTimer(to: .idle)
         }
     }
