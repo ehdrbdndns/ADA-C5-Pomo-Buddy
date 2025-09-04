@@ -17,11 +17,11 @@ struct PomoBuddyWidget: Widget {
                         .foregroundColor(.white)
                 }
                 
-                Text(context.state.sessionState)
+                Text(statusText(for: context.state.timerState))
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.8))
                 
-                Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
+                timerTextView(context: context)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -36,7 +36,7 @@ struct PomoBuddyWidget: Widget {
             DynamicIsland {
                 // MARK: Expanded UI
                 DynamicIslandExpandedRegion(.leading) {
-                    Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
+                    timerTextView(context: context)
                         .font(.title)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.trailing)
@@ -50,7 +50,7 @@ struct PomoBuddyWidget: Widget {
                 }
                 
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("\(context.attributes.taskName) - \(context.state.sessionState)")
+                    Text("\(context.attributes.taskName) - \(statusText(for: context.state.timerState))")
                         .font(.headline)
                         .padding(.top, 8)
                 }
@@ -64,7 +64,7 @@ struct PomoBuddyWidget: Widget {
                 
             } compactTrailing: {
                 // MARK: Compact Trailing UI
-                Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
+                timerTextView(context: context)
                     .frame(width: 50)
                 
             } minimal: {
@@ -74,6 +74,28 @@ struct PomoBuddyWidget: Widget {
                     .aspectRatio(contentMode: .fit)
                     .padding(4)
             }
+        }
+    }
+    
+    private func statusText(for timerState: TimerState) -> String {
+        switch timerState {
+        case .focusing:
+            return "Focusing"
+        case .breaking:
+            return "Break"
+        case .paused:
+            return "Paused"
+        case .idle:
+            return "Idle"
+        }
+    }
+    
+    @ViewBuilder
+    private func timerTextView(context: ActivityViewContext<PomoBuddyActivityAttributes>) -> some View {
+        if context.state.timerState == .paused {
+            Text(context.state.timeRemainingString)
+        } else {
+            Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
         }
     }
 }

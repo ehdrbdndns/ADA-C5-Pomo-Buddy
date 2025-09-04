@@ -2,7 +2,7 @@
 import Foundation
 
 /// Represents the current state of the timer.
-enum TimerState {
+enum TimerState: String, Codable {
     case idle
     case focusing
     case breaking

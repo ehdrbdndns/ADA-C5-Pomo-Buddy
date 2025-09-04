@@ -105,11 +105,18 @@ final class TimerViewModel {
         timer?.invalidate()
         timerState = .paused
         cancelAllScheduledTasks()
+        
+        let characterImageName = (prePauseState == .focusing) ? "hamster-focus" : "hamster-break"
+        liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, timerState: .paused, characterImageName: characterImageName)
     }
     
     func resume() {
         guard timerState == .paused else { return }
         timerState = prePauseState
+        
+        let characterImageName = (timerState == .focusing) ? "hamster-focus" : "hamster-break"
+        liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, timerState: timerState, characterImageName: characterImageName)
+        
         scheduleSession(for: timerState, duration: timeRemaining)
         runTimer()
     }
@@ -158,6 +165,10 @@ final class TimerViewModel {
     
     func appDidEnterBackground() {
         guard timerState == .focusing || timerState == .breaking else { return }
+        
+        let characterImageName = (timerState == .focusing) ? "hamster-focus" : "hamster-break"
+        liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, timerState: timerState, characterImageName: characterImageName)
+        
         timer?.invalidate()
         timeWhenMovedToBackground = Date()
         stateWhenMovedToBackground = timerState
@@ -275,7 +286,7 @@ final class TimerViewModel {
         timerState = .breaking
         timeRemaining = settings.currentWorkType?.breakDuration ?? (5 * 60)
         
-        liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, sessionState: "Break", characterImageName: "hamster-break")
+        liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, timerState: .breaking, characterImageName: "hamster-break")
         scheduleSession(for: .breaking, duration: timeRemaining)
         runTimer()
     }
@@ -286,7 +297,7 @@ final class TimerViewModel {
             timerState = .focusing
             timeRemaining = settings.currentWorkType?.focusDuration ?? (25 * 60)
             
-            liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, sessionState: "Focus", characterImageName: "hamster-focus")
+            liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, timerState: .focusing, characterImageName: "hamster-focus")
             scheduleSession(for: .focusing, duration: timeRemaining)
             runTimer()
         } else {

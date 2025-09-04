@@ -58,6 +58,13 @@
 			);
 			target = E77BA76C2E4DA467008DC259 /* ADA-C5-Pomo Buddy */;
 		};
+		E74474D72E69ABA70065BF58 /* Exceptions for "ADA-C5-Pomo Buddy" folder in "PomoBuddyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Global/TimerState.swift,
+			);
+			target = E731FEA42E572BE200E6A616 /* PomoBuddyWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -72,6 +79,9 @@
 		};
 		E77BA76F2E4DA467008DC259 /* ADA-C5-Pomo Buddy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E74474D72E69ABA70065BF58 /* Exceptions for "ADA-C5-Pomo Buddy" folder in "PomoBuddyWidgetExtension" target */,
+			);
 			path = "ADA-C5-Pomo Buddy";
 			sourceTree = "<group>";
 		};

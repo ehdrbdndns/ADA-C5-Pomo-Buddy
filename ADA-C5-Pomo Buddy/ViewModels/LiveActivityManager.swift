@@ -13,10 +13,10 @@ final class LiveActivityManager {
         
         let endTime = Date().addingTimeInterval(timeRemaining)
         let initialState = PomoBuddyActivityAttributes.ContentState(
-            sessionState: "Focus",
-            timeRemaining: timeRemaining.formattedTimeString,
+            timerState: .focusing,
             endTime: endTime,
-            characterImageName: characterImageName
+            characterImageName: characterImageName,
+            timeRemainingString: timeRemaining.formattedTimeString
         )
         
         do {
@@ -32,13 +32,13 @@ final class LiveActivityManager {
         }
     }
     
-    func updateLiveActivity(timeRemaining: TimeInterval, sessionState: String, characterImageName: String) {
+    func updateLiveActivity(timeRemaining: TimeInterval, timerState: TimerState, characterImageName: String) {
         let endTime = Date().addingTimeInterval(timeRemaining)
         let updatedState = PomoBuddyActivityAttributes.ContentState(
-            sessionState: sessionState,
-            timeRemaining: timeRemaining.formattedTimeString,
+            timerState: timerState,
             endTime: endTime,
-            characterImageName: characterImageName
+            characterImageName: characterImageName,
+            timeRemainingString: timeRemaining.formattedTimeString
         )
         
         Task {
