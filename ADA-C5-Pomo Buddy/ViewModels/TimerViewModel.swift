@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import SwiftData
+import ActivityKit
 
 @Observable
 final class TimerViewModel {
@@ -16,7 +17,6 @@ final class TimerViewModel {
     private var prePauseState: TimerState = .idle
     private let liveActivityManager = LiveActivityManager()
     private var timeWhenMovedToBackground: Date?
-    private var stateWhenMovedToBackground: TimerState?
     
     // MARK: - Computed Properties
     var focusTimeInMinutes: Int {
@@ -163,73 +163,22 @@ final class TimerViewModel {
         settings.selectedWorkType = newWorkType
     }
     
-    func appDidEnterBackground() {
-        guard timerState == .focusing || timerState == .breaking else { return }
-        
-        let characterImageName = (timerState == .focusing) ? "hamster-focus" : "hamster-break"
-        liveActivityManager.updateLiveActivity(timeRemaining: timeRemaining, timerState: timerState, characterImageName: characterImageName)
-        
-        timer?.invalidate()
-        timeWhenMovedToBackground = Date()
-        stateWhenMovedToBackground = timerState
-    }
-    
     func appWillEnterForeground() {
-        guard let timeWhenMovedToBackground = self.timeWhenMovedToBackground,
-              let stateWhenMovedToBackground = self.stateWhenMovedToBackground,
-              let settings = settings,
-              let workType = settings.currentWorkType else { return }
-
-        let elapsedTime = Date().timeIntervalSince(timeWhenMovedToBackground)
-        var timeRemainingWhenBackgrounded = self.timeRemaining
+        // 1. 현재 실행중인 Live Activity의 최신 상태를 가져옴
+        guard let activity = Activity<PomoBuddyActivityAttributes>.activities.first else { return }
+        let latestState = activity.content.state
         
-        if elapsedTime < timeRemainingWhenBackgrounded {
-            self.timeRemaining -= elapsedTime
-            scheduleSession(for: stateWhenMovedToBackground, duration: self.timeRemaining)
-            runTimer()
+        // 2. 목표 종료 시간과 현재 시간의 차이를 계산하여 정확한 남은 시간을 구함
+        let newTimeRemaining = latestState.endTime.timeIntervalSinceNow
+        
+        // 3. 남은 시간을 기준으로 상태를 복원
+        if newTimeRemaining <= 0 {
+            handleTimerCompletion()
         } else {
-            var remainingElapsedTime = elapsedTime
-            var currentState = stateWhenMovedToBackground
-            var logsCreated = false
-            
-            while remainingElapsedTime >= timeRemainingWhenBackgrounded {
-                remainingElapsedTime -= timeRemainingWhenBackgrounded
-                
-                if currentState == .focusing {
-                    let log = FocusLog(date: .now, focusDuration: workType.focusDuration)
-                    modelContext.insert(log)
-                    logsCreated = true
-                    
-                    currentState = .breaking
-                    timeRemainingWhenBackgrounded = workType.breakDuration
-                } else { // .breaking
-                    if settings.isAutoTimerEnabled {
-                        currentState = .focusing
-                        timeRemainingWhenBackgrounded = workType.focusDuration
-                    } else {
-                        currentState = .idle
-                        break
-                    }
-                }
-            }
-            
-            if logsCreated {
-                fetchFocusLogs()
-            }
-            
-            if currentState == .idle {
-                resetTimer(to: .idle)
-                liveActivityManager.endLiveActivity()
-            } else {
-                self.timerState = currentState
-                self.timeRemaining = timeRemainingWhenBackgrounded - remainingElapsedTime
-                scheduleSession(for: currentState, duration: self.timeRemaining)
-                runTimer()
-            }
+            self.timerState = latestState.timerState
+            self.timeRemaining = newTimeRemaining
+            runTimer()
         }
-        
-        self.timeWhenMovedToBackground = nil
-        self.stateWhenMovedToBackground = nil
     }
     
     // MARK: - Private Methods
@@ -281,7 +230,7 @@ final class TimerViewModel {
         
         let log = FocusLog(date: .now, focusDuration: settings.currentWorkType?.focusDuration ?? (25 * 60))
         modelContext.insert(log)
-        fetchFocusLogs() // Refetch to update the count and array
+        fetchFocusLogs()
         
         timerState = .breaking
         timeRemaining = settings.currentWorkType?.breakDuration ?? (5 * 60)

@@ -18,8 +18,6 @@ struct ContentView: View {
         .ignoresSafeArea()
         .onChange(of: scenePhase) { oldPhase, newPhase in
             switch newPhase {
-            case .background:
-                viewModel.appDidEnterBackground()
             case .active:
                 viewModel.appWillEnterForeground()
             default:
