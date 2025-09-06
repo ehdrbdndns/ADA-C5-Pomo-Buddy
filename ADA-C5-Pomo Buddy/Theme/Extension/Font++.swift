@@ -13,6 +13,9 @@ extension Font {
 
     /// Menlo Bold, 64pt
     static let B2: Font = .custom("Menlo", size: 64).weight(.bold)
+    
+    /// Menlo Bold, 42pt
+    static let B3: Font = .custom("Menlo", size: 42).weight(.bold)
 
     // MARK: - SemiBold
     

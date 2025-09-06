@@ -6,29 +6,22 @@ struct PomoBuddyWidget: Widget {
         ActivityConfiguration(for: PomoBuddyActivityAttributes.self) { context in
             // MARK: - Lock Screen UI
             VStack(alignment: .center, spacing: 8) {
-                HStack {
+                HStack(spacing: 2) {
                     Image(context.state.characterImageName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 12)
                     
-                    Text(context.attributes.taskName)
-                        .font(.headline)
-                        .foregroundColor(.white)
+                    taskTextView(context: context)
                 }
                 
-                Text(statusText(for: context.state.timerState))
-                    .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.8))
-                
                 timerTextView(context: context)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .font(.B3)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
             }
             .padding()
-            .background(Color.black.opacity(0.3))
+            .background(Color.black)
             .cornerRadius(20)
 
         } dynamicIsland: { context in
@@ -96,6 +89,24 @@ struct PomoBuddyWidget: Widget {
             Text(context.state.timeRemainingString)
         } else {
             Text(timerInterval: Date.now...context.state.endTime, countsDown: true)
+        }
+    }
+    
+    @ViewBuilder
+    private func taskTextView(context: ActivityViewContext<PomoBuddyActivityAttributes>) -> some View {
+        switch context.state.timerState {
+        case .focusing:
+            Text("Focus")
+                .font(.M2)
+                .foregroundColor(Color.yellow1)
+        case .idle, .paused:
+            Text("Paused")
+                .font(.M2)
+                .foregroundColor(Color.white)
+        case .breaking:
+            Text("Break")
+                .font(.M2)
+                .foregroundColor(Color.blue2)
         }
     }
 }
