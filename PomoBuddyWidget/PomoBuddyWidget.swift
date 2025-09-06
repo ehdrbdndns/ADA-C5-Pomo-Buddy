@@ -19,6 +19,10 @@ struct PomoBuddyWidget: Widget {
                     .font(.B3)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
+                    .padding(.bottom, 5)
+                
+                intentButtonView(context: context)
+                    .padding(.horizontal, 24)
             }
             .padding()
             .background(Color.black)
@@ -69,7 +73,9 @@ struct PomoBuddyWidget: Widget {
             }
         }
     }
-    
+}
+
+extension PomoBuddyWidget {
     private func statusText(for timerState: TimerState) -> String {
         switch timerState {
         case .focusing:
@@ -108,5 +114,73 @@ struct PomoBuddyWidget: Widget {
                 .font(.M2)
                 .foregroundColor(Color.blue2)
         }
+    }
+    
+    @ViewBuilder
+    private func intentButtonView(context: ActivityViewContext<PomoBuddyActivityAttributes>) -> some View {
+        
+        HStack(spacing: 12) {
+            switch(context.state.timerState) {
+            case .focusing:
+                giveupButton
+                
+                pauseButton
+            case .breaking:
+                
+                skipBreakButton
+            case .paused, .idle:
+                giveupButton
+                
+                startButton
+            }
+        }
+    }
+    
+    var giveupButton: some View {
+        Button {
+            
+        } label: {
+            Text("Give Up")
+                .font(.SB2)
+        }
+        .buttonStyle(CustomButtonStyle(
+            backgroundColor: .black, foregroundColor: .grey20, borderColor: .grey10
+        ))
+    }
+    
+    var pauseButton: some View {
+        Button {
+            
+        } label: {
+            Text("Pause")
+                .font(.SB2)
+        }
+        .buttonStyle(CustomButtonStyle(
+            backgroundColor: .blackDim20, foregroundColor: .yellow1, borderColor: .yellow1
+        ))
+    }
+    
+    var startButton: some View {
+        Button {
+            
+        } label: {
+            Text("Start")
+                .font(.SB2)
+        }
+        .buttonStyle(CustomButtonStyle(
+            backgroundColor: .blackDim20, foregroundColor: .yellow1, borderColor: .yellow1
+        ))
+    }
+    
+    var skipBreakButton: some View {
+        Button {
+            
+        } label: {
+            Text("Skip Break")
+                .font(.SB2)
+        }
+        .buttonStyle(CustomButtonStyle(
+            backgroundColor: .blackDim20, foregroundColor: .blue2, borderColor: .blue2
+        ))
     }
 }

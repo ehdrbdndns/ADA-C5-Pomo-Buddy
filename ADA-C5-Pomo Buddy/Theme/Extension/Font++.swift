@@ -21,6 +21,8 @@ extension Font {
     
     /// Quicksand SemiBold, 17pt
     static let SB1: Font = .custom("Quicksand", size: 17).weight(.semibold)
+    /// Quicksand SemiBold, 15pt
+    static let SB2: Font = .custom("Quicksand", size: 15).weight(.semibold)
 
     // MARK: - Medium
     
