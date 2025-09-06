@@ -16,9 +16,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E731FEA42E572BE200E6A616"
-               BuildableName = "PomoBuddyWidgetExtension.appex"
-               BlueprintName = "PomoBuddyWidgetExtension"
+               BlueprintIdentifier = "E77BA76C2E4DA467008DC259"
+               BuildableName = "ADA-C5-Pomo Buddy.app"
+               BlueprintName = "ADA-C5-Pomo Buddy"
                ReferencedContainer = "container:ADA-C5-Pomo Buddy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,9 +30,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E77BA76C2E4DA467008DC259"
-               BuildableName = "ADA-C5-Pomo Buddy.app"
-               BlueprintName = "ADA-C5-Pomo Buddy"
+               BlueprintIdentifier = "E731FEA42E572BE200E6A616"
+               BuildableName = "PomoBuddyWidgetExtension.appex"
+               BlueprintName = "PomoBuddyWidgetExtension"
                ReferencedContainer = "container:ADA-C5-Pomo Buddy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

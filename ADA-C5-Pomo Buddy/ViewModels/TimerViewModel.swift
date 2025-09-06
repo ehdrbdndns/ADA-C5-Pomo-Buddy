@@ -102,7 +102,7 @@ final class TimerViewModel {
     func pause() {
         guard timerState == .focusing || timerState == .breaking else { return }
         prePauseState = timerState
-        timer?.invalidate()
+        stopTimer()
         timerState = .paused
         cancelAllScheduledTasks()
         
@@ -122,14 +122,14 @@ final class TimerViewModel {
     }
     
     func giveUp() {
-        timer?.invalidate()
+        stopTimer()
         liveActivityManager.endLiveActivity()
         cancelAllScheduledTasks()
         resetTimer(to: .idle)
     }
     
     func skipBreak() {
-        timer?.invalidate()
+        stopTimer()
         liveActivityManager.endLiveActivity()
         cancelAllScheduledTasks()
         resetTimer(to: .idle)
@@ -164,14 +164,13 @@ final class TimerViewModel {
     }
     
     func appWillEnterForeground() {
-        // 1. 현재 실행중인 Live Activity의 최신 상태를 가져옴
+        guard let timeWhenMovedToBackground = self.timeWhenMovedToBackground else { return }
+        
         guard let activity = Activity<PomoBuddyActivityAttributes>.activities.first else { return }
         let latestState = activity.content.state
         
-        // 2. 목표 종료 시간과 현재 시간의 차이를 계산하여 정확한 남은 시간을 구함
         let newTimeRemaining = latestState.endTime.timeIntervalSinceNow
         
-        // 3. 남은 시간을 기준으로 상태를 복원
         if newTimeRemaining <= 0 {
             handleTimerCompletion()
         } else {
@@ -179,6 +178,8 @@ final class TimerViewModel {
             self.timeRemaining = newTimeRemaining
             runTimer()
         }
+        
+        self.timeWhenMovedToBackground = nil
     }
     
     // MARK: - Private Methods
@@ -197,10 +198,16 @@ final class TimerViewModel {
     }
     
     private func runTimer() {
+        UIApplication.shared.isIdleTimerDisabled = true
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.updateTimer()
         }
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     private func updateTimer() {
@@ -212,7 +219,7 @@ final class TimerViewModel {
     }
     
     func handleTimerCompletion() {
-        timer?.invalidate()
+        stopTimer()
         cancelAllScheduledTasks()
 
         switch timerState {
