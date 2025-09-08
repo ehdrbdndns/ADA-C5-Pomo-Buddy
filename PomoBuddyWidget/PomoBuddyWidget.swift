@@ -123,15 +123,12 @@ extension PomoBuddyWidget {
             switch(context.state.timerState) {
             case .focusing:
                 giveupButton
-                
                 pauseButton
             case .breaking:
-                
                 skipBreakButton
             case .paused, .idle:
                 giveupButton
-                
-                startButton
+                resumeButton
             }
         }
     }
@@ -160,11 +157,11 @@ extension PomoBuddyWidget {
         ))
     }
     
-    var startButton: some View {
-        Button {
+    var resumeButton: some View {
+        Button() {
             
         } label: {
-            Text("Start")
+            Text("Resume")
                 .font(.SB2)
         }
         .buttonStyle(CustomButtonStyle(

@@ -215,7 +215,12 @@ final class TimerViewModel {
             self.settings?.timerState = widgetState
             self.settings?.sessionEndTime = widgetEndTime
             
-            if Date() < widgetEndTime {
+            if widgetState == .paused {
+                if let pausedAt = self.settings?.pausedTime {
+                    self.timeRemaining = widgetEndTime.timeIntervalSince(pausedAt)
+                }
+                
+            } else if Date() < widgetEndTime {
                 self.timeRemaining = widgetEndTime.timeIntervalSince(Date())
                 runTimer()
                 
