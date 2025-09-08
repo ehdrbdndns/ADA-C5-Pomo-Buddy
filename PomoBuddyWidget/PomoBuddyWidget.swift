@@ -20,6 +20,7 @@ struct PomoBuddyWidget: Widget {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 5)
+                    .frame(width: .infinity)
                 
                 intentButtonView(context: context)
                     .padding(.horizontal, 24)
@@ -34,9 +35,8 @@ struct PomoBuddyWidget: Widget {
                 // MARK: Expanded UI
                 DynamicIslandExpandedRegion(.leading) {
                     timerTextView(context: context)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .multilineTextAlignment(.trailing)
+                        .font(.custom("Melno", size: 42))
+                        .fontWeight(.bold)
                 }
                 
                 DynamicIslandExpandedRegion(.trailing) {
@@ -53,23 +53,29 @@ struct PomoBuddyWidget: Widget {
                 }
                 
             } compactLeading: {
+                // MARK: Compact Trailing UI
+                VStack(alignment: .leading) {
+                    timerTextView(context: context)
+                        .font(.custom("Melno", size: 12))
+                    
+                    Text(statusText(for: context.state.timerState))
+                        .font(.R1)
+                        .foregroundStyle(statusColor(for: context.state.timerState))
+                }
+                .padding(.leading, 10)
+                .frame(width: 40)
+            } compactTrailing: {
                 // MARK: Compact Leading UI
                 Image(context.state.characterImageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .padding(4)
-                
-            } compactTrailing: {
-                // MARK: Compact Trailing UI
-                timerTextView(context: context)
-                    .frame(width: 50)
-                
+                    .frame(width: 20, height: 20)
             } minimal: {
                 // MARK: Minimal UI
                 Image(context.state.characterImageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .padding(4)
+                    .frame(width: 20, height: 20)
             }
         }
     }
@@ -79,13 +85,24 @@ extension PomoBuddyWidget {
     private func statusText(for timerState: TimerState) -> String {
         switch timerState {
         case .focusing:
-            return "Focusing"
+            return "Focus"
         case .breaking:
             return "Break"
         case .paused:
             return "Paused"
         case .idle:
             return "Idle"
+        }
+    }
+    
+    private func statusColor(for timerState: TimerState) -> Color {
+        switch timerState {
+        case .focusing:
+            return Color.yellow1
+        case .breaking:
+            return Color.blue2
+        case .idle, .paused:
+            return Color.white
         }
     }
     
