@@ -75,6 +75,9 @@ struct ADA_C5_Pomo_BuddyApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(preferredColorScheme)
+                .onAppear {
+                    timerViewModel.giveUp()
+                }
         }
         .modelContainer(modelContainer)
         .environment(timerViewModel)

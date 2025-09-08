@@ -56,6 +56,10 @@ final class TimerSettings {
     var selectedCharacter: CharacterType
     var appearance: AppearanceMode
     
+    var timerState: TimerState
+    var sessionEndTime: Date?
+    var pausedTime: Date?
+    
     @Relationship(deleteRule: .cascade)
     var workList: [WorkType] = []
     
@@ -70,6 +74,10 @@ final class TimerSettings {
         self.appearance = .light
         self.workList = []
         self.selectedWorkType = nil
+        
+        self.timerState = .idle
+        self.sessionEndTime = nil
+        self.pausedTime = nil
     }
     
     var currentWorkType: WorkType? {
