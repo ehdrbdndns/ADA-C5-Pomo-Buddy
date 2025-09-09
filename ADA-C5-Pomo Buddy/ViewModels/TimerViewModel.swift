@@ -269,8 +269,13 @@ final class TimerViewModel {
     }
     
     private func scheduleSession(for state: TimerState, duration: TimeInterval) {
-        let title = (state == .focusing) ? "Focus session is over!" : "Break is over!"
-        let body = (state == .focusing) ? "Good job! Time for a break." : "Let's get back to focus."
+        let titleKey = (state == .focusing) ? "notification_focus_title" : "notification_break_title"
+        let bodyKey = (state == .focusing) ? "notification_focus_body" : "notification_break_body"
+
+        let title = NSLocalizedString(titleKey, comment: "")
+        let body = NSLocalizedString(bodyKey, comment: "")
+        
+        print("Scheduling notification: \(title) in \(duration) seconds")
         
         NotificationManager.shared.scheduleNotification(title: title, body: body, timeInSeconds: duration)
         BackgroundTaskManager.shared.scheduleRefresh(at: Date().addingTimeInterval(duration))
@@ -316,7 +321,6 @@ final class TimerViewModel {
     
     func handleTimerCompletion() {
         stopTimer()
-        cancelAllScheduledTasks()
 
         guard let currentState = settings?.timerState else {
             giveUp()

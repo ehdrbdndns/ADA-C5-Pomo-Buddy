@@ -10,30 +10,41 @@ struct DefaultTheme: AppThemeProfile {
     private func lightTheme(state: TimerState) -> AppTheme {
         var timerBackground = Color.start
         var character = HAMSTER_IDLE
+        var coin = Color.yellow3
+        var coinBorder = Color.yellow1
         
         switch(state) {
         case .idle:
             timerBackground = Color.start
             character = HAMSTER_IDLE
+            coin = Color.yellow3
+            coinBorder = Color.yellow1
             break;
         case .focusing:
             timerBackground = Color.focus
             character = HAMSTER_FOCUSING
+            coin = Color.yellow3
+            coinBorder = Color.yellow1
             break;
         case .breaking:
             timerBackground = Color.rest
             character = HAMSTER_BREAKING
+            coin = Color.caption1
+            coinBorder = Color.blue1
             break;
         case .paused:
             timerBackground = Color.start
             character = HAMSTER_IDLE
+            coin = Color.yellow3
+            coinBorder = Color.yellow1
             break;
         }
         
         return AppTheme(
             character: character,
             timerViewTheme: .init(
-                coin: Color.yellow3,
+                coin: coin,
+                coinBorder: coinBorder,
                 pencil: Color.caption1,
                 workingType: Color.caption1,
                 timer: Color.title,
@@ -46,30 +57,41 @@ struct DefaultTheme: AppThemeProfile {
     private func darkTheme(state: TimerState) -> AppTheme {
         var timerBackground = Color.start
         var character = HAMSTER_IDLE
+        var coin = Color.yellow3
+        var coinBorder = Color.yellow1
         
         switch(state) {
         case .idle:
             timerBackground = Color.start
             character = HAMSTER_IDLE
+            coin = Color.yellow3
+            coinBorder = Color.yellow1
             break;
         case .focusing:
             timerBackground = Color.focus
             character = HAMSTER_FOCUSING
+            coin = Color.yellow3
+            var coinBorder = Color.yellow1
             break;
         case .breaking:
             timerBackground = Color.rest
             character = HAMSTER_BREAKING
+            coin = Color.caption1
+            var coinBorder = Color.yellow1
             break;
         case .paused:
             timerBackground = Color.start
             character = HAMSTER_IDLE
+            coin = Color.yellow3
+            var coinBorder = Color.yellow1
             break;
         }
         
         return AppTheme(
             character: character,
             timerViewTheme: .init(
-                coin: Color.yellow3,
+                coin: coin,
+                coinBorder: coinBorder,
                 pencil: Color.caption1,
                 workingType: Color.caption1,
                 timer: Color.title,

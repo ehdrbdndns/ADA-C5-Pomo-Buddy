@@ -1,11 +1,12 @@
 import SwiftUI
 
-// Figma Text Styles
-// Generated on 2025-08-27
-// As per user request, variable names match Figma layer names and fonts are used as specified.
 
 extension Font {
 
+    private static var appFontFamily: String {
+        Locale.current.language.languageCode?.identifier == "ko" ? "Paperlogy" : "Quicksand"
+    }
+    
     // MARK: - Bold
     
     /// Menlo Bold, 40pt
@@ -20,47 +21,56 @@ extension Font {
     // MARK: - SemiBold
     
     /// Quicksand SemiBold, 17pt
-    static let SB1: Font = .custom("Quicksand", size: 17).weight(.semibold)
+    static let SB1: Font = .custom(appFontFamily, size: 17).weight(.semibold)
     /// Quicksand SemiBold, 15pt
-    static let SB2: Font = .custom("Quicksand", size: 15).weight(.semibold)
+    static let SB2: Font = .custom(appFontFamily, size: 15).weight(.semibold)
 
     // MARK: - Medium
     
     /// Quicksand Medium, 10pt
-    static let M1: Font = .custom("Quicksand", size: 10).weight(.medium)
+    static let M1: Font = .custom(appFontFamily, size: 10).weight(.medium)
     
     /// Quicksand Medium, 12pt
-    static let M2: Font = .custom("Quicksand", size: 12).weight(.medium)
+    static let M2: Font = .custom(appFontFamily, size: 12).weight(.medium)
     
     /// Quicksand Medium, 14pt
-    static let M3: Font = .custom("Quicksand", size: 14).weight(.medium)
+    static let M3: Font = .custom(appFontFamily, size: 14).weight(.medium)
     
     /// Quicksand Medium, 16pt
-    static let M4: Font = .custom("Quicksand", size: 16).weight(.medium)
+    static let M4: Font = .custom(appFontFamily, size: 16).weight(.medium)
     
     /// Quicksand Medium, 18pt
-    static let M5: Font = .custom("Quicksand", size: 18).weight(.medium)
+    static let M5: Font = .custom(appFontFamily, size: 18).weight(.medium)
+    
+    /// Quicksand Medium, 20pt
+    static let M6: Font = .custom(appFontFamily, size: 20).weight(.medium)
+    
+    /// Quicksand Medium, 22pt
+    static let M7: Font = .custom(appFontFamily, size: 22).weight(.medium)
+    
+    /// Quicksand Medium, 24pt
+    static let M8: Font = .custom(appFontFamily, size: 24).weight(.medium)
 
     // MARK: - Regular
     
     /// Quicksand Regular, 8pt
-    static let R1: Font = .custom("Quicksand", size: 8).weight(.regular)
+    static let R1: Font = .custom(appFontFamily, size: 8).weight(.regular)
     
     /// Quicksand Regular, 12pt
-    static let R2: Font = .custom("Quicksand", size: 12).weight(.regular)
+    static let R2: Font = .custom(appFontFamily, size: 12).weight(.regular)
     
     /// Quicksand Regular, 10pt
-    static let R3: Font = .custom("Quicksand", size: 10).weight(.regular)
+    static let R3: Font = .custom(appFontFamily, size: 10).weight(.regular)
     
     /// Quicksand Regular, 16pt
-    static let R4: Font = .custom("Quicksand", size: 16).weight(.regular)
+    static let R4: Font = .custom(appFontFamily, size: 16).weight(.regular)
     
     /// Quicksand Regular, 20pt
-    static let R5: Font = .custom("Quicksand", size: 20).weight(.regular)
+    static let R5: Font = .custom(appFontFamily, size: 20).weight(.regular)
     
     /// Quicksand Regular, 18pt
-    static let R6: Font = .custom("Quicksand", size: 18).weight(.regular)
+    static let R6: Font = .custom(appFontFamily, size: 18).weight(.regular)
     
     /// Quicksand Regular, 22pt
-    static let R7: Font = .custom("Quicksand", size: 22).weight(.regular)
+    static let R7: Font = .custom(appFontFamily, size: 22).weight(.regular)
 }

@@ -13,20 +13,19 @@
 "timerView_button_skipBreak" = "휴식 건너뛰기";
 
 // MARK: - TimerView Texts
-"timerView_text_explanationIdle" = "집중할 준비가 됐나요? 🐹";
-"timerView_text_explanationFocusing" = "집중하고 있어요! 🏃‍♀️";
-"timerView_text_explanationBreaking" = "잘했어요! 🎉";
+"timerView_text_explanationIdle" = "준비되셨나요 찍? 가보자구 찍! 🐹";
+"timerView_text_explanationFocusing" = "집중해요 찍! 우린 할 수 있어요 찍! 🏃‍♀️";
+"timerView_text_explanationBreaking" = "잘했어요 찍! 이제 잠시 쉬어요 찍! 🎉";
 "timerView_text_explanationPaused" = "잠시 멈췄어요. 다시 시작해볼까요? ⏸️";
-"timerView_text_settingState" = "뽀모도로 타이머 • %d분 집중, %d분 휴식";
 
 // MARK: - WorkTypeModalView Texts
-"workTypeModalView_text_selectWorkType" = "작업 선택";
+"workTypeModalView_text_selectWorkType" = "집중할 작업 선택";
 "workTypeModalView_text_AutoTimer" = "자동 타이머";
 "workTypeModalView_text_createNewWork" = "작업 생성";
 "workTypeModalView_text_workName" = "작업 이름";
 "workTypeModalView_text_enterWorkName" = "작업 이름을 입력하세요.";
-"workTypeModalView_text_focusTime" = "집중시간";
-"workTypeModalView_text_breakTime" = "쉬는시간";
+"workTypeModalView_text_focusTime" = "집중 시간";
+"workTypeModalView_text_breakTime" = "쉬는 시간";
 "workTypeModalView_text_min" = "분";
 "workTypeModalView_text_save" = "저장";
 
@@ -59,3 +58,9 @@
 "timerView_alert_giveUp_title" = "포기하기";
 "timerView_alert_giveUp_message" = "정말로 현재 세션을 포기하시겠습니까?";
 "timerView_alert_giveUp_confirm" = "포기";
+
+// MARK: - Notifications
+"notification_focus_title" = "집중 시간 끝 🐹";
+"notification_focus_body" = "수고했다 찍! 잠깐 쉬어보자 찍!";
+"notification_break_title" = "쉬는 시간 끝 🐹";
+"notification_break_body" = "다 쉬었다 찍! 이제 시작해보자 찍!";
