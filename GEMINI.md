@@ -139,7 +139,7 @@ This section serves as a style guide and a set of instructions for writing consi
 *   **Rule**: All colors and font sizes must be referenced from the central theme files (`AppColor.swift`, `AppFontSize.swift`). Do not use hardcoded values (e.g., `Color.red`, `fontSize: 12`) in View files.
 *   **State-Dependent Styles**: For colors that change based on `TimerState` or `ColorScheme`, use the `ThemeManager` to get the correct `AppTheme` object, then use its properties.
     ```swift
-    let theme = themeManager.currentTheme.theme(for: viewModel.timerState, in: colorScheme)
+    let theme = themeManager.currentTheme.theme(for: viewModel.settings?.timerState ?? .idle, in: colorScheme)
     view.background(theme.background)
     ```
 *   **Fixed Styles**: For styles that do not change, use the static properties from `AppFontSize` and `Font.Weight` directly in the view. The base font family is `Quicksand`.
@@ -180,3 +180,15 @@ When modifying or writing ViewModels (e.g., `TimerViewModel`), the following sty
 
 *   **5.5.5. No Comments**
     *   Do not write comments that explain logic. The code should be self-explanatory.
+
+### 5.6. State Synchronization Strategy
+To ensure data consistency across the app, widgets, and background tasks, a specific synchronization strategy is employed.
+
+*   **Priority**: The user's perceived state is the highest priority. Therefore, the state of the Live Activity widget, if active, is considered the primary source of truth upon foregrounding.
+*   **`init()` (Cold Start)**: When the app is launched from a terminated state, the `TimerViewModel`'s `init()` is called. This process **must not** attempt to restore a previous session. It should call `resetTimer()` to ensure the app always starts in a clean, predictable `.idle` state. This interprets a cold start (including post-force-quit) as the user's intent to start fresh.
+*   **`appWillEnterForeground()` (Warm Start)**: When the app returns from the background, `synchronizeState()` is called. Its logic is as follows:
+    1.  **Check for Active Live Activity**: It first checks if a Live Activity is running.
+    2.  **If Activity Exists**: It trusts the widget's state (`timerState` and `endTime`).
+        *   If the widget's timer has not expired, the app's UI timer is synced to it.
+        *   If the widget's timer has expired, `handleTimerCompletion()` is called to process the state transition.
+    3.  **If No Activity Exists**: This implies the app has been in the background for a long time. The "catch-up loop" is executed. It repeatedly processes session completions based on the `sessionEndTime` in `SwiftData` until the state is fully caught up to the present moment.
