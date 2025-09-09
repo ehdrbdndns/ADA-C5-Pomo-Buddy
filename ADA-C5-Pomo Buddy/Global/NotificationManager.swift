@@ -1,10 +1,13 @@
 import Foundation
 import UserNotifications
 
-class NotificationManager {
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     static let shared = NotificationManager()
-    private init() {}
+    
+    override init() {
+        super.init()
+    }
     
     func scheduleNotification(title: String, body: String, timeInSeconds: TimeInterval) {
         let content = UNMutableNotificationContent()
@@ -21,5 +24,13 @@ class NotificationManager {
     
     func cancelAllNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+    
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        completionHandler([.banner, .list, .sound])
     }
 }
