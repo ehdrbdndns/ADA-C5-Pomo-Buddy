@@ -37,6 +37,9 @@ extension Font {
     
     /// Quicksand Medium, 16pt
     static let M4: Font = .custom("Quicksand", size: 16).weight(.medium)
+    
+    /// Quicksand Medium, 18pt
+    static let M5: Font = .custom("Quicksand", size: 18).weight(.medium)
 
     // MARK: - Regular
     

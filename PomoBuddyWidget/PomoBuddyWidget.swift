@@ -6,11 +6,11 @@ struct PomoBuddyWidget: Widget {
         ActivityConfiguration(for: PomoBuddyActivityAttributes.self) { context in
             // MARK: - Lock Screen UI
             VStack(alignment: .center, spacing: 8) {
-                HStack(spacing: 2) {
+                HStack(spacing: 4) {
                     Image(context.state.characterImageName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 12)
+                        .frame(width: 24, height: 24)
                     
                     taskTextView(context: context)
                 }
@@ -22,8 +22,8 @@ struct PomoBuddyWidget: Widget {
                     .padding(.bottom, 5)
                     .frame(width: .infinity)
                 
-                intentButtonView(context: context)
-                    .padding(.horizontal, 24)
+//                intentButtonView(context: context)
+//                    .padding(.horizontal, 24)
             }
             .padding()
             .background(Color.black)
@@ -120,15 +120,15 @@ extension PomoBuddyWidget {
         switch context.state.timerState {
         case .focusing:
             Text("Focus")
-                .font(.M2)
+                .font(.M5)
                 .foregroundColor(Color.yellow1)
         case .idle, .paused:
             Text("Paused")
-                .font(.M2)
+                .font(.M5)
                 .foregroundColor(Color.white)
         case .breaking:
             Text("Break")
-                .font(.M2)
+                .font(.M5)
                 .foregroundColor(Color.blue2)
         }
     }

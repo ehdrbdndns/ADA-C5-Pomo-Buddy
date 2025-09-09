@@ -52,6 +52,8 @@ struct ADA_C5_Pomo_BuddyApp: App {
         _timerViewModel = State(initialValue: timerVM)
         _themeManager = State(initialValue: themeM)
         
+        UNUserNotificationCenter.current().delegate = NotificationManager.shared
+        
         BackgroundTaskManager.shared.register()
         
         requestNotificationPermission()
