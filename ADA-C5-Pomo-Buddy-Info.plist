@@ -9,6 +9,15 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Quicksand.ttf</string>
+		<string>Paperlogy-Black.ttf</string>
+		<string>Paperlogy-Bold.ttf</string>
+		<string>Paperlogy-ExtraBold.ttf</string>
+		<string>Paperlogy-ExtraLight.ttf</string>
+		<string>Paperlogy-Light.ttf</string>
+		<string>Paperlogy-Medium.ttf</string>
+		<string>Paperlogy-Regular.ttf</string>
+		<string>Paperlogy-SemiBold.ttf</string>
+		<string>Paperlogy-Thin.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

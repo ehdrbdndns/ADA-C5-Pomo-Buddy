@@ -84,7 +84,7 @@ extension TimerView {
         .padding(.horizontal, 12)
         .overlay(
             RoundedRectangle(cornerRadius: 100)
-                .stroke(Color.yellow1, lineWidth: 1)
+                .stroke(theme.timerViewTheme.coinBorder, lineWidth: 1)
         )
     }
     

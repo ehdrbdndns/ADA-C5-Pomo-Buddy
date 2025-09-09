@@ -11,6 +11,7 @@ struct AppTheme {
 
 struct TimerViewTheme {
     let coin: Color
+    let coinBorder: Color
     let pencil: Color
     let workingType: Color
     let timer: Color

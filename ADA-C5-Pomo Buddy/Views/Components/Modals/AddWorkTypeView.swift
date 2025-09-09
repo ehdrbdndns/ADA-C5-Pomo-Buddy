@@ -136,18 +136,9 @@ private extension AddWorkTypeView {
         } label: {
             Text("workTypeModalView_text_save")
                 .font(.SB1)
-                .foregroundColor(isNameEmpty ? .gray : Color.yellow2)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(
-                    isNameEmpty ? Color.gray.opacity(0.2) : Color.yellowDim20
-                )
-                .cornerRadius(100)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 100)
-                        .stroke(isNameEmpty ? .gray : Color.yellow1, lineWidth: 1)
-                )
         }
+        .buttonStyle(isNameEmpty ? .inactive : .secondary)
         .disabled(isNameEmpty)
     }
 }

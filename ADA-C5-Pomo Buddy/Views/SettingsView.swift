@@ -30,7 +30,7 @@ private extension SettingsView {
     func characterContainer(geometry: GeometryProxy) -> some View {
         VStack {
             Text("navigation_settings")
-                .font(.custom("QuickSand", size: 24).weight(.medium))
+                .font(.M8)
                 .padding(.top, 40)
             
             Spacer()

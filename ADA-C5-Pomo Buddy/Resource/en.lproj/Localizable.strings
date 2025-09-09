@@ -53,3 +53,9 @@
 "timerView_alert_giveUp_title" = "Give Up";
 "timerView_alert_giveUp_message" = "Are you sure you want to give up the current session?";
 "timerView_alert_giveUp_confirm" = "Give Up";
+
+// MARK: - Notifications
+"notification_focus_title" = "Focus Time Over 🐹";
+"notification_focus_body" = "Great Job! Let’s take a break!";
+"notification_break_title" = "Break Time Over 🐹";
+"notification_break_body" = "All rested up! Let’s get started again!";
