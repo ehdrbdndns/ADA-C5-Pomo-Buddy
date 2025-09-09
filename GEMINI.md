@@ -162,3 +162,21 @@ This section serves as a style guide and a set of instructions for writing consi
 *   **Principle**: To improve compiler performance and code readability, complex views must be broken down into smaller, single-purpose sub-views.
 *   **Primary Pattern**: Use `private var body: some View` computed properties, typically organized within a `private extension` of the main view. This is the preferred pattern as it provides direct access to the main view's state (like `@Environment` objects) without passing numerous parameters.
 *   **Alternative Pattern**: For cases where explicit dependency passing is clearer, `private func body(...) -> some View` that accepts `@Binding` parameters is also acceptable. The choice should be based on clarity and context.
+
+### 5.5. ViewModel Code Style
+When modifying or writing ViewModels (e.g., `TimerViewModel`), the following style guide must be followed.
+
+*   **5.5.1. Separated Guard Statements**
+    *   Each condition must be handled by a separate `guard` statement. Do not chain multiple conditions in a single `guard` statement using commas.
+
+*   **5.5.2. Logical Block Separation**
+    *   Use blank lines to visually separate logically distinct blocks of code within a function (e.g., guard clauses, data processing, function calls).
+
+*   **5.5.3. Multi-line Function Call Formatting**
+    *   When calling a function with multiple parameters, write each parameter on a new, indented line in the format `parameterName: value` to enhance readability.
+
+*   **5.5.4. State Variable Minimization**
+    *   Avoid adding temporary state variables to the ViewModel (e.g., `prePauseState`). Instead, derive logic from the state of the `SwiftData` model and the function's flow.
+
+*   **5.5.5. No Comments**
+    *   Do not write comments that explain logic. The code should be self-explanatory.

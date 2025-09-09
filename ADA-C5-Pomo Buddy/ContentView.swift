@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(TimerViewModel.self) private var viewModel
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some View {
         TabView {
             Tab("navigation_home", systemImage: "house") {
@@ -13,5 +16,13 @@ struct ContentView: View {
         }
         .accentColor(Color(hex: "#DEAE00"))
         .ignoresSafeArea()
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            switch newPhase {
+            case .active:
+                viewModel.appWillEnterForeground()
+            default:
+                break
+            }
+        }
     }
 }

@@ -13,11 +13,16 @@ extension Font {
 
     /// Menlo Bold, 64pt
     static let B2: Font = .custom("Menlo", size: 64).weight(.bold)
+    
+    /// Menlo Bold, 42pt
+    static let B3: Font = .custom("Menlo", size: 42).weight(.bold)
 
     // MARK: - SemiBold
     
     /// Quicksand SemiBold, 17pt
     static let SB1: Font = .custom("Quicksand", size: 17).weight(.semibold)
+    /// Quicksand SemiBold, 15pt
+    static let SB2: Font = .custom("Quicksand", size: 15).weight(.semibold)
 
     // MARK: - Medium
     
@@ -32,6 +37,9 @@ extension Font {
     
     /// Quicksand Medium, 16pt
     static let M4: Font = .custom("Quicksand", size: 16).weight(.medium)
+    
+    /// Quicksand Medium, 18pt
+    static let M5: Font = .custom("Quicksand", size: 18).weight(.medium)
 
     // MARK: - Regular
     

@@ -12,7 +12,5 @@ import SwiftUI
 struct PomoBuddyWidgetBundle: WidgetBundle {
     var body: some Widget {
         PomoBuddyWidget()
-        PomoBuddyWidgetControl()
-        PomoBuddyWidgetLiveActivity()
     }
 }

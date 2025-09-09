@@ -3,4 +3,52 @@
    uuid = "644A8EE6-581F-4A05-BF09-734990525DB9"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F1F99D15-2C8E-474B-BC54-34D8AA5E803F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomoBuddyWidget/TimerIntents.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "perform()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F1F99D15-2C8E-474B-BC54-34D8AA5E803F - d0562d7408cbeb90"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for ADA_C5_Pomo_Buddy.ResumeIntent.perform() async throws -&gt; some"
+                  moduleName = "ADA-C5-Pomo Buddy.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/donggyunyang/code/ADA/ADA-C5-Pomo%20Buddy/PomoBuddyWidget/TimerIntents.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107">
+               </Location>
+               <Location
+                  uuid = "F1F99D15-2C8E-474B-BC54-34D8AA5E803F - 21ffa2c3e9cd2456"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for ADA_C5_Pomo_Buddy.ResumeIntent.perform() async throws -&gt; some"
+                  moduleName = "ADA-C5-Pomo Buddy.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/donggyunyang/code/ADA/ADA-C5-Pomo%20Buddy/PomoBuddyWidget/TimerIntents.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

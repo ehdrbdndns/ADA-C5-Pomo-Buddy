@@ -40,6 +40,7 @@
 		E731FEA52E572BE200E6A616 /* PomoBuddyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PomoBuddyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E731FEA72E572BE200E6A616 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E731FEA92E572BE200E6A616 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		E74476DE2E6E6F770065BF58 /* PomoBuddyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PomoBuddyWidgetExtension.entitlements; sourceTree = "<group>"; };
 		E77BA76D2E4DA467008DC259 /* ADA-C5-Pomo Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ADA-C5-Pomo Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -58,6 +59,22 @@
 			);
 			target = E77BA76C2E4DA467008DC259 /* ADA-C5-Pomo Buddy */;
 		};
+		E74474D72E69ABA70065BF58 /* Exceptions for "ADA-C5-Pomo Buddy" folder in "PomoBuddyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"/Localized: Resource/Localizable.strings",
+				Global/TimerState.swift,
+				Models/FocusLog.swift,
+				Models/TimerSettings.swift,
+				Models/WorkType.swift,
+				Resource/Font/Quicksand.ttf,
+				"Theme/Extension/ButtonStyle++.swift",
+				"Theme/Extension/Color++.swift",
+				"Theme/Extension/Font++.swift",
+				"Theme/Extension/TimeInterval++.swift",
+			);
+			target = E731FEA42E572BE200E6A616 /* PomoBuddyWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -72,6 +89,9 @@
 		};
 		E77BA76F2E4DA467008DC259 /* ADA-C5-Pomo Buddy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E74474D72E69ABA70065BF58 /* Exceptions for "ADA-C5-Pomo Buddy" folder in "PomoBuddyWidgetExtension" target */,
+			);
 			path = "ADA-C5-Pomo Buddy";
 			sourceTree = "<group>";
 		};
@@ -109,6 +129,7 @@
 		E77BA7642E4DA467008DC259 = {
 			isa = PBXGroup;
 			children = (
+				E74476DE2E6E6F770065BF58 /* PomoBuddyWidgetExtension.entitlements */,
 				E77BA76F2E4DA467008DC259 /* ADA-C5-Pomo Buddy */,
 				E731FEAB2E572BE200E6A616 /* PomoBuddyWidget */,
 				E731FEA62E572BE200E6A616 /* Frameworks */,
@@ -261,6 +282,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = PomoBuddyWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7WT5JSS7B6;
@@ -288,6 +310,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = PomoBuddyWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7WT5JSS7B6;
@@ -445,6 +468,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ADA-C5-Pomo-Buddy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = PomoBuddy;
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -476,6 +500,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ADA-C5-Pomo-Buddy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = PomoBuddy;
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

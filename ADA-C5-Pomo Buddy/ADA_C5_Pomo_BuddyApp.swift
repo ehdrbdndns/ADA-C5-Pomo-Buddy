@@ -51,6 +51,22 @@ struct ADA_C5_Pomo_BuddyApp: App {
         
         _timerViewModel = State(initialValue: timerVM)
         _themeManager = State(initialValue: themeM)
+        
+        UNUserNotificationCenter.current().delegate = NotificationManager.shared
+        
+        BackgroundTaskManager.shared.register()
+        
+        requestNotificationPermission()
+    }
+    
+    private func requestNotificationPermission(){
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("All set!")
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
     }
 
     private var preferredColorScheme: ColorScheme? {
@@ -61,6 +77,9 @@ struct ADA_C5_Pomo_BuddyApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(preferredColorScheme)
+                .onAppear {
+                    timerViewModel.giveUp()
+                }
         }
         .modelContainer(modelContainer)
         .environment(timerViewModel)

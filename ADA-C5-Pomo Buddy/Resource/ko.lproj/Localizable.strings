@@ -1,4 +1,3 @@
-
 /* 
   Localizable.strings
   ADA-C5-Pomo Buddy
@@ -55,3 +54,8 @@
 
 // MARK: - Character
 "character_name_default" = "뽀모";
+
+// MARK: - TimerView Alert
+"timerView_alert_giveUp_title" = "포기하기";
+"timerView_alert_giveUp_message" = "정말로 현재 세션을 포기하시겠습니까?";
+"timerView_alert_giveUp_confirm" = "포기";

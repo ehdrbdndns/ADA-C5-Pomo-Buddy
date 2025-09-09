@@ -4,7 +4,7 @@ import SwiftUI
 struct DefaultTheme: AppThemeProfile {
     // MARK: - Light Mode Themes
     let HAMSTER_IDLE = "hamster-idle"
-    let HAMSTER_FOCUSING = "hamster-idle"
+    let HAMSTER_FOCUSING = "hamster-focus"
     let HAMSTER_BREAKING = "hamster-break"
     
     private func lightTheme(state: TimerState) -> AppTheme {
