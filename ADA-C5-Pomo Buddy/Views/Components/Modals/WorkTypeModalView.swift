@@ -26,7 +26,7 @@ struct WorkTypeModalView: View {
             }
         }
         .padding(.horizontal, 26)
-        .padding(.vertical, 24)
+        .padding(.vertical, 48)
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(.white)

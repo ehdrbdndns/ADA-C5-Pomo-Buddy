@@ -14,7 +14,7 @@ struct ContentView: View {
                 SettingsView()
             }
         }
-        .accentColor(Color(hex: "#DEAE00"))
+        .accentColor(viewModel.settings?.timerState == .breaking ? .blue1 : .yellow4)
         .ignoresSafeArea()
         .onChange(of: scenePhase) { oldPhase, newPhase in
             switch newPhase {
