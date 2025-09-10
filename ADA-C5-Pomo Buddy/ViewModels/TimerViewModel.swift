@@ -115,7 +115,7 @@ final class TimerViewModel {
             , timeRemaining: timeRemaining
             , characterImageName: "hamster-focus"
         )
-        scheduleSession(for: .focusing, duration: duration)
+        scheduleNotification(for: .focusing, duration: duration)
         runTimer()
     }
     
@@ -161,7 +161,7 @@ final class TimerViewModel {
             , characterImageName: "hamster-focus"
         )
 
-        scheduleSession(for: .focusing, duration: self.timeRemaining)
+        scheduleNotification(for: .focusing, duration: self.timeRemaining)
         runTimer()
     }
     
@@ -201,8 +201,27 @@ final class TimerViewModel {
         settings.selectedWorkType = newWorkType
     }
     
+    func logFocusSession(workType: WorkType) {
+        let log = FocusLog(date: .now, focusDuration: workType.focusDuration)
+        modelContext.insert(log)
+        fetchFocusLogs()
+    }
+    
     func appWillEnterForeground() {
         synchronizeState()
+    }
+    
+    func prepareForBackground() {
+        stopTimer()
+
+        guard timerState == .focusing || timerState == .breaking else { return }
+        guard let endTime = settings?.sessionEndTime else { return }
+
+        let remainingTime = endTime.timeIntervalSince(Date())
+        if remainingTime > 0 {
+            BackgroundTaskManager.shared.cancelAll()
+            scheduleBackgroundTask(duration: remainingTime)
+        }
     }
     
     // MARK: - Private Methods
@@ -268,16 +287,17 @@ final class TimerViewModel {
         }
     }
     
-    private func scheduleSession(for state: TimerState, duration: TimeInterval) {
+    private func scheduleNotification(for state: TimerState, duration: TimeInterval) {
         let titleKey = (state == .focusing) ? "notification_focus_title" : "notification_break_title"
         let bodyKey = (state == .focusing) ? "notification_focus_body" : "notification_break_body"
 
         let title = NSLocalizedString(titleKey, comment: "")
         let body = NSLocalizedString(bodyKey, comment: "")
         
-        print("Scheduling notification: \(title) in \(duration) seconds")
-        
         NotificationManager.shared.scheduleNotification(title: title, body: body, timeInSeconds: duration)
+    }
+    
+    private func scheduleBackgroundTask(duration: TimeInterval) {
         BackgroundTaskManager.shared.scheduleRefresh(at: Date().addingTimeInterval(duration))
     }
     
@@ -297,7 +317,7 @@ final class TimerViewModel {
             }
     }
     
-    private func stopTimer() {
+    func stopTimer() {
         timer?.cancel()
         UIApplication.shared.isIdleTimerDisabled = false
     }
@@ -307,7 +327,7 @@ final class TimerViewModel {
             giveUp()
             return
         }
-
+        
         let newRemaining = endTime.timeIntervalSince(Date())
         
         guard newRemaining > 0 else {
@@ -388,7 +408,7 @@ final class TimerViewModel {
             , characterImageName: characterImageName
         )
         
-        scheduleSession(for: nextState, duration: timeRemaining)
+        scheduleNotification(for: nextState, duration: timeRemaining)
         runTimer()
     }
     
