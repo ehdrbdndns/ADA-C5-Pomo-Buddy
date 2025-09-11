@@ -100,7 +100,7 @@ final class TimerViewModel {
         guard let workType = self.workType else { return }
         guard let duration = settings.currentWorkType?.focusDuration else { return }
         
-        cancelAllScheduledTasks()
+        NotificationManager.shared.cancelAllNotifications()
         
         let endTime = Date().addingTimeInterval(duration)
         
@@ -124,7 +124,7 @@ final class TimerViewModel {
         guard (settings.timerState == .focusing || settings.timerState == .breaking) else { return }
         
         stopTimer()
-        cancelAllScheduledTasks()
+        NotificationManager.shared.cancelAllNotifications()
         
         settings.timerState = .paused
         settings.pausedTime = Date()
@@ -160,7 +160,6 @@ final class TimerViewModel {
             , timerState: .focusing
             , characterImageName: "hamster-focus"
         )
-        
         scheduleNotification(for: .focusing, duration: self.timeRemaining)
         runTimer()
     }
@@ -213,6 +212,28 @@ final class TimerViewModel {
     
     func prepareForBackground() {
         stopTimer()
+        
+        guard let settings = settings else { return }
+        
+        let timerState = settings.timerState
+        var characterImageName: String
+        
+        switch timerState {
+        case .focusing:
+            characterImageName = "hamster-focus"
+        case .breaking:
+            characterImageName = "hamster-idle"
+        default:
+            return;
+        }
+        
+        liveActivityManager.updateLiveActivity(
+            timeRemaining: timeRemaining
+            , timerState: timerState
+            , characterImageName: characterImageName
+        )
+        NotificationManager.shared.cancelAllNotifications()
+        scheduleNotification(for: timerState, duration: timeRemaining)
     }
     
     func handleTimerCompletion() {
@@ -226,7 +247,14 @@ final class TimerViewModel {
         if let result = TimerStateEngine.calculate(from: settings.timerState, workType: workType, isAutoTimerEnabled: settings.isAutoTimerEnabled) {
             performTransition(using: result, workType: workType)
         } else {
-            resetToIdle()
+            stopTimer()
+            liveActivityManager.endLiveActivity()
+            
+            settings.timerState = .idle
+            settings.sessionEndTime = nil
+            settings.pausedTime = nil
+            
+            self.timeRemaining = settings.currentWorkType?.focusDuration ?? 0
         }
     }
     
@@ -288,6 +316,7 @@ final class TimerViewModel {
         
         if let currentEndTime = settings.sessionEndTime, (settings.timerState == .focusing || settings.timerState == .breaking) {
             self.timeRemaining = currentEndTime.timeIntervalSince(Date())
+            scheduleNotification(for: settings.timerState, duration: self.timeRemaining)
             runTimer()
         } else {
             giveUp()
@@ -302,10 +331,6 @@ final class TimerViewModel {
         let body = NSLocalizedString(bodyKey, comment: "")
         
         NotificationManager.shared.scheduleNotification(title: title, body: body, timeInSeconds: duration)
-    }
-    
-    private func cancelAllScheduledTasks() {
-        NotificationManager.shared.cancelAllNotifications()
     }
     
     private func runTimer() {
@@ -393,7 +418,7 @@ extension TimerViewModel: TransitionPerformer {
     func resetToIdle() {
         stopTimer()
         liveActivityManager.endLiveActivity()
-        cancelAllScheduledTasks()
+        NotificationManager.shared.cancelAllNotifications()
         
         if let settings = settings {
             settings.timerState = .idle
