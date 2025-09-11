@@ -14,7 +14,7 @@ final class TimerViewModel {
     // MARK: - Private Properties
     private var timer: AnyCancellable?
     private var modelContext: ModelContext
-    private let liveActivityManager = LiveActivityManager()
+    private let liveActivityManager = LiveActivityManager.shared
     
     // MARK: - Computed Properties
     var focusTimeInMinutes: Int {
@@ -95,21 +95,21 @@ final class TimerViewModel {
     // MARK: - Public Methods
     func start() {
         guard let settings = self.settings,
-                (settings.timerState == .idle || settings.timerState == .breaking) else { return }
+              (settings.timerState == .idle || settings.timerState == .breaking) else { return }
         
         guard let workType = self.workType else { return }
         guard let duration = settings.currentWorkType?.focusDuration else { return }
         
         cancelAllScheduledTasks()
-
+        
         let endTime = Date().addingTimeInterval(duration)
         
         settings.timerState = .focusing
         settings.sessionEndTime = endTime
         settings.pausedTime = nil
-
+        
         self.timeRemaining = duration
-
+        
         liveActivityManager.startLiveActivity(
             taskName: workType.name
             , timeRemaining: timeRemaining
@@ -138,39 +138,39 @@ final class TimerViewModel {
     
     func resume() {
         guard let settings = self.settings,
-                settings.timerState == .paused else { return }
-
+              settings.timerState == .paused else { return }
+        
         guard let pausedAt = settings.pausedTime,
               let oldEndTime = settings.sessionEndTime else {
             giveUp()
             return
         }
-
+        
         let pausedDuration = Date().timeIntervalSince(pausedAt)
         let newEndTime = oldEndTime.addingTimeInterval(pausedDuration)
-
+        
         settings.sessionEndTime = newEndTime
         settings.pausedTime = nil
         settings.timerState = .focusing // 항상 .focusing으로 복원
-
+        
         self.timeRemaining = newEndTime.timeIntervalSince(Date())
-
+        
         liveActivityManager.updateLiveActivity(
             timeRemaining: self.timeRemaining
             , timerState: .focusing
             , characterImageName: "hamster-focus"
         )
-
+        
         scheduleNotification(for: .focusing, duration: self.timeRemaining)
         runTimer()
     }
     
     func giveUp() {
-        resetTimer()
+        resetToIdle()
     }
     
     func skipBreak() {
-        resetTimer()
+        resetToIdle()
     }
     
     func deleteWorkType(_ workType: WorkType) {
@@ -213,10 +213,10 @@ final class TimerViewModel {
     
     func prepareForBackground() {
         stopTimer()
-
+        
         guard timerState == .focusing || timerState == .breaking else { return }
         guard let endTime = settings?.sessionEndTime else { return }
-
+        
         let remainingTime = endTime.timeIntervalSince(Date())
         if remainingTime > 0 {
             BackgroundTaskManager.shared.cancelAll()
@@ -224,9 +224,26 @@ final class TimerViewModel {
         }
     }
     
+    func handleTimerCompletion() {
+        stopTimer()
+        
+        guard let settings = settings, let workType = workType else {
+            resetToIdle()
+            return
+        }
+        
+        if let result = TimerStateEngine.calculate(from: settings.timerState, workType: workType, isAutoTimerEnabled: settings.isAutoTimerEnabled) {
+            performTransition(using: result, workType: workType)
+        } else {
+            resetToIdle()
+        }
+    }
+    
     // MARK: - Private Methods
-
+    
     private func synchronizeState() {
+        fetchFocusLogs()
+        
         if let activity = Activity<PomoBuddyActivityAttributes>.activities.first {
             let widgetEndTime = activity.content.state.endTime
             let widgetState = activity.content.state.timerState
@@ -250,7 +267,7 @@ final class TimerViewModel {
         }
         
         guard let settings = self.settings else { return }
-
+        
         while let endTime = settings.sessionEndTime, Date() >= endTime {
             if settings.timerState == .paused { break }
             
@@ -277,8 +294,7 @@ final class TimerViewModel {
                 break
             }
         }
-        fetchFocusLogs()
-
+        
         if let currentEndTime = settings.sessionEndTime, (settings.timerState == .focusing || settings.timerState == .breaking) {
             self.timeRemaining = currentEndTime.timeIntervalSince(Date())
             runTimer()
@@ -290,7 +306,7 @@ final class TimerViewModel {
     private func scheduleNotification(for state: TimerState, duration: TimeInterval) {
         let titleKey = (state == .focusing) ? "notification_focus_title" : "notification_break_title"
         let bodyKey = (state == .focusing) ? "notification_focus_body" : "notification_break_body"
-
+        
         let title = NSLocalizedString(titleKey, comment: "")
         let body = NSLocalizedString(bodyKey, comment: "")
         
@@ -309,7 +325,7 @@ final class TimerViewModel {
     private func runTimer() {
         UIApplication.shared.isIdleTimerDisabled = true
         timer?.cancel()
-
+        
         timer = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
@@ -317,7 +333,7 @@ final class TimerViewModel {
             }
     }
     
-    func stopTimer() {
+    private func stopTimer() {
         timer?.cancel()
         UIApplication.shared.isIdleTimerDisabled = false
     }
@@ -335,95 +351,8 @@ final class TimerViewModel {
             handleTimerCompletion()
             return
         }
-
+        
         self.timeRemaining = newRemaining
-    }
-    
-    func handleTimerCompletion() {
-        stopTimer()
-
-        guard let currentState = settings?.timerState else {
-            giveUp()
-            return
-        }
-        
-        transition(from: currentState)
-    }
-
-    private func transition(from currentState: TimerState) {
-        guard let settings = settings,
-              let workType = settings.currentWorkType
-        else {
-            giveUp()
-            return
-        }
-
-        let nextState: TimerState
-        
-        switch currentState {
-        case .focusing:
-            nextState = .breaking
-        case .breaking:
-            if settings.isAutoTimerEnabled {
-                nextState = .focusing
-            } else {
-                giveUp()
-                return
-            }
-        default:
-            giveUp()
-            return
-        }
-        
-        let duration: TimeInterval
-        let characterImageName: String
-
-        switch nextState {
-        case .breaking:
-            let log = FocusLog(date: .now, focusDuration: workType.focusDuration)
-            modelContext.insert(log)
-            fetchFocusLogs()
-            
-            duration = workType.breakDuration
-            characterImageName = "hamster-break"
-            
-        case .focusing:
-            duration = workType.focusDuration
-            characterImageName = "hamster-focus"
-            
-        default:
-            giveUp()
-            return
-        }
-
-        let newEndTime = Date().addingTimeInterval(duration)
-        
-        settings.timerState = nextState
-        settings.sessionEndTime = newEndTime
-        self.timeRemaining = duration
-
-        liveActivityManager.updateLiveActivity(
-            timeRemaining: timeRemaining
-            , timerState: nextState
-            , characterImageName: characterImageName
-        )
-        
-        scheduleNotification(for: nextState, duration: timeRemaining)
-        runTimer()
-    }
-    
-    private func resetTimer() {
-        stopTimer()
-        liveActivityManager.endLiveActivity()
-        cancelAllScheduledTasks()
-
-        if let settings = settings {
-            settings.timerState = .idle
-            settings.sessionEndTime = nil
-            settings.pausedTime = nil
-        }
-
-        self.timeRemaining = settings?.currentWorkType?.focusDuration ?? 0
     }
     
     private func fetchSettings() {
@@ -448,5 +377,44 @@ final class TimerViewModel {
         } catch {
             fatalError("Failed to fetch focus logs: \(error)")
         }
+    }
+}
+
+// MARK: - TransitionPerformer Conformance
+extension TimerViewModel: TransitionPerformer {
+    func performTransition(using result: TimerStateEngine.TransitionResult, workType: WorkType) {
+        if result.shouldLogFocusSession {
+            logFocusSession(workType: workType)
+        }
+        
+        let newEndTime = Date().addingTimeInterval(result.duration)
+        
+        settings?.timerState = result.nextState
+        settings?.sessionEndTime = newEndTime
+        
+        self.timeRemaining = result.duration
+        
+        liveActivityManager.updateLiveActivity(
+            timeRemaining: result.duration,
+            timerState: result.nextState,
+            characterImageName: result.characterImageName
+        )
+        
+        scheduleNotification(for: result.nextState, duration: result.duration)
+        runTimer()
+    }
+    
+    func resetToIdle() {
+        stopTimer()
+        liveActivityManager.endLiveActivity()
+        cancelAllScheduledTasks()
+        
+        if let settings = settings {
+            settings.timerState = .idle
+            settings.sessionEndTime = nil
+            settings.pausedTime = nil
+        }
+        
+        self.timeRemaining = settings?.currentWorkType?.focusDuration ?? 0
     }
 }
