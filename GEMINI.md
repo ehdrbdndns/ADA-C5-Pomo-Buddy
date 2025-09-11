@@ -57,12 +57,14 @@ The project will be built using the **MVVM (Model-View-ViewModel)** pattern.
 *   `/Models`: Contains SwiftData models (`TimerSettings`, `FocusLog`, `WorkType`).
 *   `/Views`: Contains all SwiftUI views.
     *   `/Views/Components`: Contains reusable, smaller view components.
+        *   `/Views/Components/Modals`: Contains modal views like `WorkTypeModalView`, `WorkTypeListView`, and `AddWorkTypeView`.
 *   `/ViewModels`: Contains the ViewModel classes (`TimerViewModel`).
-*   `/Global`: Holds globally accessible enums (`TimerState`).
-*   `/Theme`: Manages the design system (`AppColor`, `AppFontSize`, `AppTheme`, etc.).
-*   `/Resource`: Contains resources, including language-specific localization files.
+*   `/Global`: Holds globally accessible enums and managers (`TimerState`, `LiveActivityManager`, `NotificationManager`, etc.).
+*   `/Theme`: Manages the design system (`AppTheme`, `ThemeManager`, `Color++`, `Font++`, etc.).
+*   `/Resource`: Contains resources, including language-specific localization files and fonts.
     *   `/Resource/en.lproj/Localizable.strings`
     *   `/Resource/ko.lproj/Localizable.strings`
+    *   `/Resource/Font`: Contains font files.
 
 ### 3.4. Main View Descriptions
 *   **TimerView**: The main screen for the Pomodoro timer operation, character interaction, and session progress. It includes a button to present the `WorkTypeModalView`.
