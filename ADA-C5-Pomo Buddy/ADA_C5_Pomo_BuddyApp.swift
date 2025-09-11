@@ -21,7 +21,12 @@ struct ADA_C5_Pomo_BuddyApp: App {
             WorkType.self
         ])
         
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let groupID = "group.com.donggyunyang.ADA-C5-Pomo-Buddy"
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) else {
+            fatalError("Failed to get container URL")
+        }
+        let storeURL = containerURL.appendingPathComponent("PomoBuddy.sqlite")
+        let modelConfiguration = ModelConfiguration(schema: schema, url: storeURL)
         
         do {
             modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
@@ -53,8 +58,6 @@ struct ADA_C5_Pomo_BuddyApp: App {
         _themeManager = State(initialValue: themeM)
         
         UNUserNotificationCenter.current().delegate = NotificationManager.shared
-        
-        BackgroundTaskManager.shared.register()
         
         requestNotificationPermission()
     }

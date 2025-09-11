@@ -213,15 +213,6 @@ final class TimerViewModel {
     
     func prepareForBackground() {
         stopTimer()
-        
-        guard timerState == .focusing || timerState == .breaking else { return }
-        guard let endTime = settings?.sessionEndTime else { return }
-        
-        let remainingTime = endTime.timeIntervalSince(Date())
-        if remainingTime > 0 {
-            BackgroundTaskManager.shared.cancelAll()
-            scheduleBackgroundTask(duration: remainingTime)
-        }
     }
     
     func handleTimerCompletion() {
@@ -313,13 +304,8 @@ final class TimerViewModel {
         NotificationManager.shared.scheduleNotification(title: title, body: body, timeInSeconds: duration)
     }
     
-    private func scheduleBackgroundTask(duration: TimeInterval) {
-        BackgroundTaskManager.shared.scheduleRefresh(at: Date().addingTimeInterval(duration))
-    }
-    
     private func cancelAllScheduledTasks() {
         NotificationManager.shared.cancelAllNotifications()
-        BackgroundTaskManager.shared.cancelAll()
     }
     
     private func runTimer() {
