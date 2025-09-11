@@ -4,6 +4,9 @@ import ActivityKit
 
 final class LiveActivityManager {
     
+    static let shared = LiveActivityManager()
+    private init() {}
+    
     private var currentActivity: Activity<PomoBuddyActivityAttributes>?
     
     // MARK: - Public Methods

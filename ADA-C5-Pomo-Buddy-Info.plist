@@ -19,9 +19,5 @@
 		<string>Paperlogy-SemiBold.ttf</string>
 		<string>Paperlogy-Thin.ttf</string>
 	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-	</array>
 </dict>
 </plist>

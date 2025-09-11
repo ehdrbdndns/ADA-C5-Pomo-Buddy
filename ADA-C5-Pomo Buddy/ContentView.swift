@@ -17,11 +17,10 @@ struct ContentView: View {
         .accentColor(viewModel.settings?.timerState == .breaking ? .blue1 : .yellow4)
         .ignoresSafeArea()
         .onChange(of: scenePhase) { oldPhase, newPhase in
-            switch newPhase {
-            case .active:
+            if newPhase == .active {
                 viewModel.appWillEnterForeground()
-            default:
-                break
+            } else if newPhase == .background {
+                viewModel.prepareForBackground()
             }
         }
     }
