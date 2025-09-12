@@ -61,7 +61,7 @@ private extension SettingsView {
     func supportLinks() -> some View {
         List {
             Section() {
-                Link(destination: URL(string: "mailto:help@example.com")!) {
+                Link(destination: URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeJJmyNucC1Sf6Yfmms8WKyQztOslFEnHCudnDbQZQDyg2FFA/viewform?usp=dialog")!) {
                     HStack {
                         Image(systemName: "envelope")
                             .foregroundStyle(Color.title)
@@ -71,7 +71,7 @@ private extension SettingsView {
                     }
                 }
 
-                Link(destination: URL(string: "https://www.example.com/privacy")!) {
+                Link(destination: URL(string: "https://sunny-book-517.notion.site/26c748b531d080ba8860e7f2221956e6")!) {
                     HStack {
                         Image(systemName: "shield")
                             .foregroundStyle(Color.title)
