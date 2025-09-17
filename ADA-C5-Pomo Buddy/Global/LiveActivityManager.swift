@@ -12,26 +12,35 @@ final class LiveActivityManager {
     // MARK: - Public Methods
     
     func startLiveActivity(taskName: String, timeRemaining: TimeInterval, characterImageName: String) {
-        let attributes = PomoBuddyActivityAttributes(taskName: taskName)
-        
-        let endTime = Date().addingTimeInterval(timeRemaining)
-        let initialState = PomoBuddyActivityAttributes.ContentState(
-            timerState: .focusing,
-            endTime: endTime,
-            characterImageName: characterImageName,
-            timeRemainingString: timeRemaining.formattedTimeString
-        )
-        
-        do {
-            let activity = try Activity<PomoBuddyActivityAttributes>.request(
-                attributes: attributes,
-                content: ActivityContent(state: initialState, staleDate: nil),
-                pushType: nil)
+        Task {
+            // End all existing Live Activities to ensure only one is active.
+            for activity in Activity<PomoBuddyActivityAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
             
-            self.currentActivity = activity
-            print("Live Activity started: \(activity.id)")
-        } catch {
-            print("Error starting Live Activity: \(error.localizedDescription)")
+            // Proceed with starting a new Live Activity.
+            let attributes = PomoBuddyActivityAttributes(taskName: taskName)
+            
+            let endTime = Date().addingTimeInterval(timeRemaining)
+            let initialState = PomoBuddyActivityAttributes.ContentState(
+                timerState: .focusing,
+                endTime: endTime,
+                characterImageName: characterImageName,
+                timeRemainingString: timeRemaining.formattedTimeString
+            )
+            
+            do {
+                let activity = try Activity<PomoBuddyActivityAttributes>.request(
+                    attributes: attributes,
+                    content: ActivityContent(state: initialState, staleDate: nil),
+                    pushType: nil
+                )
+                
+                self.currentActivity = activity
+                print("Live Activity started: \(activity.id)")
+            } catch {
+                print("Error starting Live Activity: \(error.localizedDescription)")
+            }
         }
     }
     
@@ -64,7 +73,6 @@ final class LiveActivityManager {
         Task {
             await currentActivity?.end(nil, dismissalPolicy: .immediate)
             self.currentActivity = nil
-            print("Live Activity ended.")
         }
     }
 }
