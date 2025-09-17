@@ -63,7 +63,7 @@ struct PomoBuddyWidget: Widget {
                         .foregroundStyle(statusColor(for: context.state.timerState))
                 }
                 .padding(.leading, 10)
-                .frame(width: 40)
+                .frame(width: 45)
             } compactTrailing: {
                 // MARK: Compact Leading UI
                 Image(context.state.characterImageName)
