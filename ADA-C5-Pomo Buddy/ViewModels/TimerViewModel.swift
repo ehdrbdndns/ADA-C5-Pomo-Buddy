@@ -76,6 +76,10 @@ final class TimerViewModel {
         }
     }
     
+    var accentColor: Color {
+        settings?.timerState == .breaking ? .blue1 : .yellow4
+    }
+    
     private var appearanceMode: AppearanceMode {
         get {
             settings?.appearance ?? .light
@@ -110,8 +114,9 @@ final class TimerViewModel {
         
         self.timeRemaining = duration
         
+        let taskName = workType.name
         liveActivityManager.startLiveActivity(
-            taskName: workType.name
+            taskName: taskName
             , timeRemaining: timeRemaining
             , characterImageName: "hamster-focus"
         )
@@ -260,20 +265,27 @@ final class TimerViewModel {
                 if let pausedAt = self.settings?.pausedTime {
                     self.timeRemaining = widgetEndTime.timeIntervalSince(pausedAt)
                 }
-                
-            } else if Date() < widgetEndTime {
+                return;
+            }
+            
+            if Date() < widgetEndTime {
                 self.timeRemaining = widgetEndTime.timeIntervalSince(Date())
                 runTimer()
-                
-            } else {
-                handleTimerCompletion()
+                return;
             }
-            return
+            
+            if !isAutoTimerEnabled && widgetState != .focusing {
+                handleTimerCompletion()
+                return;
+            }
         }
         
         guard let settings = self.settings else { return }
         
-        while let endTime = settings.sessionEndTime, Date() >= endTime {
+        while
+            let endTime = settings.sessionEndTime
+            , Date() >= endTime
+        {
             if settings.timerState == .paused { break }
             
             let lastState = settings.timerState

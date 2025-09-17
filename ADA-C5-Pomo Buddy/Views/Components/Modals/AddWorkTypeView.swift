@@ -59,19 +59,29 @@ private extension AddWorkTypeView {
     func timePickerSection() -> some View {
         VStack(spacing: 28) {
             timePickerRow(
-                title: "workTypeModalView_text_focusTime",
-                time: $focusTime,
-                color: Color(hex: "#C7AA04")
+                title: "workTypeModalView_text_focusTime"
+                , time: $focusTime
+                , color: Color(hex: "#C7AA04")
+                , min: 1
+                , max: 60
             )
             timePickerRow(
-                title: "workTypeModalView_text_breakTime",
-                time: $breakTime,
-                color: Color(hex: "#2763BC")
+                title: "workTypeModalView_text_breakTime"
+                , time: $breakTime
+                , color: Color(hex: "#2763BC")
+                , min: 1
+                , max: 30
             )
         }
     }
     
-    func timePickerRow(title: LocalizedStringKey, time: Binding<Int>, color: Color) -> some View {
+    func timePickerRow(
+        title: LocalizedStringKey
+        , time: Binding<Int>
+        , color: Color
+        , min: Int
+        , max: Int
+    ) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title)
                 .font(.R6)
@@ -89,8 +99,7 @@ private extension AddWorkTypeView {
                 
                 HStack(spacing: 0) {
                     Button {
-                        // 1분 미만으로 내려가지 않도록 방지
-                        if time.wrappedValue > 1 {
+                        if time.wrappedValue > min {
                             time.wrappedValue -= 1
                         }
                     } label: {
@@ -106,7 +115,9 @@ private extension AddWorkTypeView {
                         .background(Color.toggle)
                     
                     Button {
-                        time.wrappedValue += 1
+                        if time.wrappedValue < max {
+                            time.wrappedValue += 1
+                        }
                     } label: {
                         Image(systemName: "plus")
                             .font(.system(size: 15))
