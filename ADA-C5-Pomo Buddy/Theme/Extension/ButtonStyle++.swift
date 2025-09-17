@@ -16,9 +16,9 @@ struct CustomButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .frame(height: 50)
             .font(.SB1)
             .foregroundStyle(foregroundColor)
-            .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .background(backgroundColor)
             .clipShape(Capsule())
