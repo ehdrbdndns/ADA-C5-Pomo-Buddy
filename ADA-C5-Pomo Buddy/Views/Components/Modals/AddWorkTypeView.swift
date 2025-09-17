@@ -62,14 +62,14 @@ private extension AddWorkTypeView {
                 title: "workTypeModalView_text_focusTime"
                 , time: $focusTime
                 , color: Color(hex: "#C7AA04")
-                , min: 1
+                , min: 15
                 , max: 60
             )
             timePickerRow(
                 title: "workTypeModalView_text_breakTime"
                 , time: $breakTime
                 , color: Color(hex: "#2763BC")
-                , min: 1
+                , min: 5
                 , max: 30
             )
         }
