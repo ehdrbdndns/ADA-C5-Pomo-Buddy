@@ -132,7 +132,6 @@ final class TimerViewModel {
         liveActivityManager.updateLiveActivity(
             timeRemaining: self.timeRemaining
             , timerState: .paused
-            , characterImageName: "hamster-focus"
         )
     }
     
@@ -158,7 +157,6 @@ final class TimerViewModel {
         liveActivityManager.updateLiveActivity(
             timeRemaining: self.timeRemaining
             , timerState: .focusing
-            , characterImageName: "hamster-focus"
         )
         scheduleNotification(for: .focusing, duration: self.timeRemaining)
         runTimer()
@@ -216,21 +214,10 @@ final class TimerViewModel {
         guard let settings = settings else { return }
         
         let timerState = settings.timerState
-        var characterImageName: String
-        
-        switch timerState {
-        case .focusing:
-            characterImageName = "hamster-focus"
-        case .breaking:
-            characterImageName = "hamster-idle"
-        default:
-            return;
-        }
         
         liveActivityManager.updateLiveActivity(
             timeRemaining: timeRemaining
             , timerState: timerState
-            , characterImageName: characterImageName
         )
         NotificationManager.shared.cancelAllNotifications()
         scheduleNotification(for: timerState, duration: timeRemaining)
@@ -259,7 +246,6 @@ final class TimerViewModel {
     }
     
     // MARK: - Private Methods
-    
     private func synchronizeState() {
         fetchFocusLogs()
         
@@ -404,12 +390,6 @@ extension TimerViewModel: TransitionPerformer {
         settings?.sessionEndTime = newEndTime
         
         self.timeRemaining = result.duration
-        
-        liveActivityManager.updateLiveActivity(
-            timeRemaining: result.duration,
-            timerState: result.nextState,
-            characterImageName: result.characterImageName
-        )
         
         scheduleNotification(for: result.nextState, duration: result.duration)
         runTimer()

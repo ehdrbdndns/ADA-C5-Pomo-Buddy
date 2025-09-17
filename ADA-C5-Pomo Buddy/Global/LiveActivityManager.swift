@@ -35,8 +35,19 @@ final class LiveActivityManager {
         }
     }
     
-    func updateLiveActivity(timeRemaining: TimeInterval, timerState: TimerState, characterImageName: String) {
+    func updateLiveActivity(timeRemaining: TimeInterval, timerState: TimerState) {
         let endTime = Date().addingTimeInterval(timeRemaining)
+        
+        var characterImageName: String = ""
+        switch timerState {
+        case .focusing:
+            characterImageName = "hamster-focus"
+        case .breaking:
+            characterImageName = "hamster-idle"
+        default:
+            characterImageName = "hamster-focus"
+        }
+        
         let updatedState = PomoBuddyActivityAttributes.ContentState(
             timerState: timerState,
             endTime: endTime,
@@ -51,7 +62,7 @@ final class LiveActivityManager {
     
     func endLiveActivity() {
         Task {
-            await currentActivity?.end(dismissalPolicy: .immediate)
+            await currentActivity?.end(nil, dismissalPolicy: .immediate)
             self.currentActivity = nil
             print("Live Activity ended.")
         }
